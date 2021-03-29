@@ -1,15 +1,26 @@
 [![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
 
-# [Name of Project] [build badges go here when available]
+# [nr-students-edition] [build badges go here when available]
 
 >[Brief description - what is the project and value does it provide? How often should users expect to get releases? How is versioning set up? Where does this project want to go?]
 
 ## Installation
 
-> [Include a step-by-step procedure on how to get your code installed. Be sure to include any third-party dependencies that need to be installed separately]
+To install the solution you need to install nodejs first. Required minimum version of nodejs is 12.x.
+When you have the nodejs run command `npm install` to setup the project.
 
 ## Getting Started
->[Simple steps to start working with the software similar to a "Hello World"]
+To run the software you need to have installed serverless framework to run it locally or have got valid AWS account to deploy it into cloud.
+
+To run locally the solution use command `sls offline`.
+
+Better way is to deploy the solution into AWS cloud. Lambdas are free for 2 milion requests. To deploy solution into AWS cloud you need created AWS IAM account and setup credentials locally. To do this check the link: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
+
+After setting up the AWS credentials the user can use command `sls deploy` to deploy the lambdas to AWS cloud. 
+
+WARNING!
+If you have multiple AWS configs you should use command `sls deploy --aws-profile <profile-name>`
+
 
 ## Usage
 >[**Optional** - Include more thorough instructions on how to use the software. This section might not be needed if the Getting Started section is enough. Remove this section if it's not needed.]
@@ -42,3 +53,20 @@ If you believe you have found a security vulnerability in this project or any of
 ## License
 [Project Name] is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
 >[If applicable: The [project name] also uses source code from third-party libraries. You can find full details on which libraries are used and the terms under which they are licensed in the third-party notices document.]
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/norbertsuski"><img src="https://avatars2.githubusercontent.com/u/5214156?v=4" width="100px;" alt="Norbert Suski"/><br /><sub><b>Norbert Suski</b></sub></a><br /><a href="#ideas-nsus" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/newrelic/nr-ngo-validation-serverless/commits?author=norbertsuski" title="Code">💻</a>
+    <td align="center"><a href="https://github.com/DominikMarciniszyn"><img src="https://avatars3.githubusercontent.com/u/59443662?v=4" width="100px;" alt="Dominik Marciniszyn"/><br /><sub><b>Dominik Marciniszyn</b></sub></a><br /><a href="#ideas-dmar" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/newrelic/nr-ngo-validation-serverless/commits?author=DominikMarciniszyn" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
