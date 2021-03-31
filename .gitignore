@@ -1,0 +1,15 @@
+# package directories
+node_modules
+jspm_packages
+
+# Project directories
+.serverless
+.build
+.coverage
+coverage
+
+# Configs
+.eslintcache
+.env
+
+.DS_Store
