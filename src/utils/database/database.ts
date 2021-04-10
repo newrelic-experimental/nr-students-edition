@@ -1,5 +1,5 @@
-import { DatabaseContext } from '../types/database';
-import { config } from '../config';
+import { DatabaseContext } from '../../types/database';
+import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 
 const databaseContext: DatabaseContext = {
