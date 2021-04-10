@@ -9,3 +9,11 @@ export const config = cleanEnv(dotEnvPath, {
   DATABASE_SECRET_ARN: str(),
   DATABASE: str(),
 });
+
+export type AppConfig = Readonly<{
+  STAGE: string;
+  REGION: string;
+  DATABASE_RESOURCE_ARN: string;
+  DATABASE_SECRET_ARN: string;
+  DATABASE: string;
+}>;
