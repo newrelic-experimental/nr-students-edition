@@ -1,4 +1,4 @@
-import { DatabaseContext } from '../../types/database';
+import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 
@@ -11,8 +11,7 @@ const databaseContext: DatabaseContext = {
 const dbClient = DataApiClient(databaseContext);
 
 
-// TODO: setup the return type based on database model
-export const getAll = async (): Promise<any | undefined> => {
+export const getAll = async (): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(`SELECT * FROM validation_attempts'`);
   return result;
 };
