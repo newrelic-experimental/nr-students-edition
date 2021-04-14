@@ -10,6 +10,7 @@ export type ValidationHistory = {
 
 export type Student = {
   id: number;
+  account_id: string;
   nr_email: string;
   user_email: string;
   firstname: string;
@@ -20,5 +21,4 @@ export type Student = {
   is_thirteen_yo: boolean;
   parentsEmail?: string;
   validation_status: boolean;
-  creation_date: Date;
 };
