@@ -32,3 +32,23 @@ functions:
           path: /ping
           method: get
           cors: true
+  save-data:
+    handler: src/functions/save.save
+    memorySize: 512
+    events:
+      - http:
+          path: /save
+          method: post
+          cors: true
+  check-validation-status:
+    handler: src/functions/check-validation-status.check
+    memorySize: 512
+    events:
+      - http:
+          path: /check
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                accountId: true
