@@ -8,7 +8,7 @@ export type ValidationHistory = {
   records: Array<Student>;
 };
 
-type Student = {
+export type Student = {
   id: number;
   nr_email: string;
   user_email: string;
