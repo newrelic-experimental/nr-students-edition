@@ -16,9 +16,13 @@ export type Student = {
   firstname: string;
   lastname: string;
   university: string;
+  level_of_study: string;
   graduation_date: Date;
   country: string;
   is_thirteen_yo: boolean;
   parentsEmail?: string;
   validation_status: boolean;
+  creation_date: Date;
 };
+
+export type ValidationStatus = boolean;
