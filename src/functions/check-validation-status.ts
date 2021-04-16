@@ -20,6 +20,8 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
   logger.info(`Getting validation status for ${accountId}`);
   const validationStatus = await getValidationStatusByAccountId(accountId);
 
+  logger.info(`ValidationStatus: ${validationStatus}`);
+
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
