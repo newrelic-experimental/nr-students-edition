@@ -8,11 +8,12 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-iam-roles-per-function
 
+useDotenv: true
+
 custom:
   defaultStage: dev
   defaultRegion: us-east-2
   environment: ${file(.env):${self:provider.stage}, file(.env):default}
-
 
 provider:
   name: aws
@@ -24,14 +25,6 @@ provider:
     TEST: ${env:TEST, 'default_value'}
 
 functions:
-  ping:
-    handler: src/functions/ping.ping
-    memorySize: 512
-    events:
-      - http:
-          path: /ping
-          method: get
-          cors: true
   save-data:
     handler: src/functions/save.save
     memorySize: 512
@@ -43,6 +36,15 @@ functions:
   check-validation-status:
     handler: src/functions/check-validation-status.check
     memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
     events:
       - http:
           path: /check
