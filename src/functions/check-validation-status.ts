@@ -3,6 +3,7 @@ import { LambdaResponse } from '../types/response';
 import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
 import { badRequestError } from '../utils/errors';
+import { getValidationStatusByAccountId } from '../utils/database/database';
 
 
 export const check = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -17,6 +18,7 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
   }
 
   logger.info(`Getting validation status for ${accountId}`);
+  const validationStatus = await getValidationStatusByAccountId(accountId);
 
   return {
     headers: {
