@@ -16,15 +16,23 @@ export const getAll = async (): Promise<ValidationHistory | undefined> => {
   return result;
 };
 
-export const getValidationStatusByAccountId = async (accountId: string): Promise<any | undefined> => {
+export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
-    `SELECT ::fields FROM ::table WHERE account_id = :account_id`,
-    {
-      fields: ['account_id'],
-      table: '',
-      account_id: accountId
-    }
+    `SELECT validation_status FROM validation_history WHERE account_id = :account_id`,
+    { account_id: accountId }
   );
+
+  return result;
+};
+
+export const getValidationStatus = async (accountId: string): Promise<any | undefined> => {
+  const result = await dbClient.query(
+    'SELECT ::fields FROM ::table WHERE id = :account_id',
+    {
+      fields: ['validation_status'],
+      table: 'validation_history',
+      account_id: accountId
+    });
 
   return result;
 };

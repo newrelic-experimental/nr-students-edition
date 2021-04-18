@@ -18,15 +18,26 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
   }
 
   logger.info(`Getting validation status for ${accountId}`);
-  const validationStatus = await getValidationStatusByAccountId(accountId);
+  const validationHistory = await getValidationStatusByAccountId(accountId);
+  logger.info(`ValidationStatus: ${JSON.stringify(validationHistory)}`);
 
-  logger.info(`ValidationStatus: ${validationStatus}`);
+  if (validationHistory.records.length === 0) {
+    return {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      statusCode: 204,
+      body: ''
+    };
+  }
+
+  const { validation_status } = validationHistory.records[0];
 
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
     statusCode: 200,
-    body: 'For now you cannot check your status hehe',
+    body: JSON.stringify(validation_status)
   };
 };
