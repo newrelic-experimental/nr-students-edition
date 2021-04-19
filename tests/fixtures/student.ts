@@ -9,7 +9,7 @@ export const studentFixture = {
     userEmail: "user@example.com",
     country: "USA",
     isThirteenYo: false,
-    graduation_date: new Date('21.03.2022'),
+    graduationDate: new Date('21.03.2022'),
     levelOfStudy: "Student",
     validationStatus: false,
     university: "The Example University"
@@ -22,7 +22,7 @@ export const studentFixture = {
     userEmail: "user@example.com",
     country: "USA",
     isThirteenYo: false,
-    graduation_date: new Date('21.03.2022'),
+    graduationDate: new Date('21.03.2022'),
     levelOfStudy: "Student",
     validationStatus: "false",
     university: "The Example University"
