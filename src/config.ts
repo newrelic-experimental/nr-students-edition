@@ -1,14 +1,22 @@
 import { cleanEnv, str } from 'envalid';
+import { config as loadEnv } from 'dotenv';
+
 
 const dotEnvPath = process.env.NODE_ENV === 'test' ? '.test.env' : '.env';
 
-export const config = cleanEnv(dotEnvPath, {
-  STAGE: str(),
-  REGION: str(),
-  DATABASE_RESOURCE_ARN: str(),
-  DATABASE_SECRET_ARN: str(),
-  DATABASE: str(),
-});
+export const config = cleanEnv(
+  {
+    ...loadEnv({ path: dotEnvPath }).parsed,
+    ...process.env,
+  },
+  {
+    STAGE: str(),
+    REGION: str(),
+    DATABASE_RESOURCE_ARN: str(),
+    DATABASE_SECRET_ARN: str(),
+    DATABASE: str(),
+  }
+);
 
 export type AppConfig = Readonly<{
   STAGE: string;
