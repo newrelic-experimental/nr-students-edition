@@ -31,7 +31,7 @@ functions:
     memorySize: 512
     events:
       - http:
-          path: /save
+          path: /students
           method: post
           cors: true
   check-validation-status:
