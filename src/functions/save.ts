@@ -5,6 +5,7 @@ import { Context } from 'aws-lambda/handler';
 import { Student, studentSchema } from "../types/person";
 import { ValidationError } from "myzod";
 import { badRequestError } from "../utils/errors";
+import { saveValidationAttempt } from '../utils/database/database';
 
 
 export const save = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -16,14 +17,17 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
     student = studentSchema.parse(event.queryStringParameters);
     logger.info(JSON.stringify(student));
 
-    // TODO: Save object to the database
+    await saveValidationAttempt(student);
 
+    logger.info('Saved students data to the database');
   } catch (error) {
     if (error instanceof ValidationError) {
       logger.error(`Validation error: ${error.message}`);
 
       return badRequestError;
     }
+
+    logger.error(`Something went wrong: ${error.message}`);
   }
 
   return {
