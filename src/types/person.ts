@@ -1,6 +1,6 @@
 import myzod, { Infer } from 'myzod';
 
-const studentSchema = myzod.object({
+export const studentSchema = myzod.object({
   accountId: myzod.string(),
   nrEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
   userEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
@@ -12,8 +12,8 @@ const studentSchema = myzod.object({
   country: myzod.string(),
   isThirteenYo: myzod.boolean(),
   parentsEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  validationStatus: myzod.string()
-});
+  validationStatus: myzod.boolean()
+}).collectErrors();
 
 export type Student = Infer<typeof studentSchema>;
 
