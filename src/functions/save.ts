@@ -4,7 +4,7 @@ import { Logger } from "../utils/logger";
 import { Context } from 'aws-lambda/handler';
 import { Student, studentSchema } from "../types/person";
 import { ValidationError } from "myzod";
-import { badRequestError } from "../utils/errors";
+import { badRequestError, internalLambdaError } from "../utils/errors";
 import { saveValidationAttempt } from '../utils/database/database';
 
 
@@ -28,6 +28,7 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
     }
 
     logger.error(`Something went wrong: ${error.message}`);
+    return internalLambdaError;
   }
 
   return {
