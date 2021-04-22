@@ -27,14 +27,16 @@ provider:
 functions:
   save-data:
     handler: src/functions/save.save
+    description: Saves students data to the database
     memorySize: 512
     events:
       - http:
-          path: /save
+          path: /students
           method: post
           cors: true
   check-validation-status:
     handler: src/functions/check-validation-status.check
+    description: Checks validation status based on given account id
     memorySize: 512
     iamRoleStatements:
       - Effect: "Allow"

@@ -1,6 +1,7 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
+import { Student } from '../../types/person';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -33,6 +34,31 @@ export const getValidationStatus = async (accountId: string): Promise<any | unde
       table: 'validation_history',
       account_id: accountId
     });
+
+  return result;
+};
+
+export const saveValidationAttempt = async (student: Student): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_attempts (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status)
+      VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status)`,
+    parameters: [
+      {
+        account_id: student.accountId,
+        nr_email: student.nrEmail,
+        user_email: student.userEmail,
+        name: student.firstname,
+        surname: student.lastname,
+        university: student.university,
+        graduation_date: student.graduationDate,
+        country: student.country,
+        is_thirteen_yo: student.isThirteenYo,
+        level_of_study: student.levelOfStudy,
+        parents_email: student.parentsEmail || '',
+        validation_status: student.validationStatus
+      },
+    ],
+  });
 
   return result;
 };

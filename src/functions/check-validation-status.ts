@@ -31,13 +31,13 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
     };
   }
 
-  const { validation_status } = validationHistory.records[0];
+  const { validationStatus } = validationHistory.records[0];
 
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
     statusCode: 200,
-    body: JSON.stringify(validation_status)
+    body: JSON.stringify(validationStatus)
   };
 };
