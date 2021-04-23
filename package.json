@@ -57,7 +57,8 @@
     "envalid": "^7.1.0",
     "http-status-codes": "^2.1.4",
     "myzod": "^1.6.1",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "serverless": "^2.37.2"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -29,6 +29,15 @@ functions:
     handler: src/functions/save.save
     description: Saves students data to the database
     memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
     events:
       - http:
           path: /students

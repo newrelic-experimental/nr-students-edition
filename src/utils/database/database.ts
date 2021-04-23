@@ -40,7 +40,7 @@ export const getValidationStatus = async (accountId: string): Promise<any | unde
 
 export const saveValidationAttempt = async (student: Student): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO validation_attempts (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status)
+    sql: `INSERT INTO validation_history (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status)
       VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status)`,
     parameters: [
       {
