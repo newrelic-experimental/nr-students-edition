@@ -1,4 +1,4 @@
-import { Student } from "../../src/types/person";
+import { StudentDTO } from "../../src/types/person";
 
 export const studentFixture = {
   fullObject: {
@@ -13,7 +13,7 @@ export const studentFixture = {
     levelOfStudy: "Student",
     validationStatus: false,
     university: "The Example University"
-  } as Student,
+  } as StudentDTO,
   wrongValueForValidationStatus: {
     accountId: "1",
     firstname: "Jack",
