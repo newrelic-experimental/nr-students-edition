@@ -10,11 +10,14 @@ import { saveValidationAttempt } from '../utils/database/database';
 
 export const save = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
+  logger.info('Pasre incoming bod...');
+  const body = JSON.parse(event.body);
+
   let student: Student = null;
   logger.info('Save user data...');
 
   try {
-    student = studentSchema.parse(event.queryStringParameters);
+    student = studentSchema.parse(body);
     logger.info(JSON.stringify(student));
 
     await saveValidationAttempt(student);
