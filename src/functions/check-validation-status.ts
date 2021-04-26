@@ -4,7 +4,7 @@ import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
 import { badRequestError } from '../utils/errors';
 import { getValidationStatusByAccountId } from '../utils/database/database';
-
+import { convertEntityToDTO } from '../utils/converters/entity-converter';
 
 export const check = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -31,13 +31,13 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
     };
   }
 
-  const { validationStatus } = validationHistory.records[0];
+  const studentDTO = convertEntityToDTO(validationHistory.records[0]);
 
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
     statusCode: 200,
-    body: JSON.stringify(validationStatus)
+    body: JSON.stringify(studentDTO.validationStatus)
   };
 };

@@ -1,4 +1,4 @@
-import { Student } from "./person";
+import { StudentEntity } from "./person";
 
 export type DatabaseContext = {
   resourceArn: string;
@@ -7,7 +7,7 @@ export type DatabaseContext = {
 };
 
 export type ValidationHistory = {
-  records: Array<Student>;
+  records: Array<StudentEntity>;
 };
 
 export type ValidationStatus = boolean;

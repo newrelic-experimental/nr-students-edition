@@ -1,6 +1,6 @@
 import myzod, { Infer } from 'myzod';
 
-export const studentSchema = myzod.object({
+export const studentDTOSchema = myzod.object({
   accountId: myzod.string(),
   nrEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
   userEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
@@ -15,4 +15,20 @@ export const studentSchema = myzod.object({
   validationStatus: myzod.boolean()
 }).collectErrors();
 
-export type Student = Infer<typeof studentSchema>;
+export const studentEntitySchema = myzod.object({
+  account_id: myzod.string(),
+  nr_email: myzod.string().pattern(/\S+@\S+\.\S+/),
+  user_email: myzod.string().pattern(/\S+@\S+\.\S+/),
+  name: myzod.string(),
+  surname: myzod.string(),
+  university: myzod.string(),
+  level_of_study: myzod.string(),
+  graduation_date: myzod.date(),
+  country: myzod.string(),
+  is_thirteen_yo: myzod.boolean(),
+  parents_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  validation_status: myzod.boolean()
+}).collectErrors();
+
+export type StudentDTO = Infer<typeof studentDTOSchema>;
+export type StudentEntity = Infer<typeof studentEntitySchema>;

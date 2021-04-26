@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { LambdaResponse } from "../types/response";
 import { Logger } from "../utils/logger";
 import { Context } from 'aws-lambda/handler';
-import { Student, studentSchema } from "../types/person";
+import { StudentDTO, studentDTOSchema } from "../types/person";
 import { ValidationError } from "myzod";
 import { badRequestError, internalLambdaError } from "../utils/errors";
 import { saveValidationAttempt } from '../utils/database/database';
@@ -13,11 +13,13 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
   logger.info('Pasre incoming bod...');
   const body = JSON.parse(event.body);
 
-  let student: Student = null;
+  // TODO: Write DTO to Entity conversion and apply for the database
+
+  let student: StudentDTO = null;
   logger.info('Save user data...');
 
   try {
-    student = studentSchema.parse(body);
+    student = studentDTOSchema.parse(body);
     logger.info(JSON.stringify(student));
 
     await saveValidationAttempt(student);
