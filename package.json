@@ -1,6 +1,6 @@
 {
   "name": "nr-students-edition",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)",
   "scripts": {
     "test": "NODE_ENV=test jest --passWithNoTests --coverage",
@@ -51,7 +51,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "aws-sdk": "2.894.0",
+    "aws-sdk": "2.895.0",
     "data-api-client": "^1.2.0",
     "dotenv": "^8.2.0",
     "envalid": "^7.1.0",
