@@ -43,6 +43,15 @@ functions:
           path: /students
           method: post
           cors: true
+  auth-github:
+    handler: src/functions/auth.authGithub
+    description: Authenticates via GitHub service
+    memorySize: 512
+    events:
+      - http:
+          path: /github/auth
+          method: get
+          cors: true
   check-validation-status:
     handler: src/functions/check-validation-status.check
     description: Checks validation status based on given account id

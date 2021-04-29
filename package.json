@@ -1,6 +1,6 @@
 {
   "name": "nr-students-edition",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)",
   "scripts": {
     "test": "NODE_ENV=test jest --passWithNoTests --coverage",
@@ -31,17 +31,17 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
     "@commitlint/config-conventional": "^12.1.1",
-    "@types/aws-lambda": "^8.10.75",
+    "@types/aws-lambda": "^8.10.76",
     "@types/data-api-client": "^1.2.1",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.41",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.1",
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "eslint": "^7.25.0",
     "husky": "^4.3.6",
     "jest": "^26.6.3",
-    "npm-check-updates": "^11.5.1",
+    "npm-check-updates": "^11.5.4",
     "prettier": "^2.2.1",
     "serverless-dotenv-plugin": "^3.9.0",
     "serverless-iam-roles-per-function": "^3.1.0",
@@ -51,7 +51,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "aws-sdk": "2.892.0",
+    "aws-sdk": "2.895.0",
     "data-api-client": "^1.2.0",
     "dotenv": "^8.2.0",
     "envalid": "^7.1.0",

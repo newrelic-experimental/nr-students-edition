@@ -12,7 +12,8 @@ export const studentDTOSchema = myzod.object({
   country: myzod.string(),
   isThirteenYo: myzod.boolean(),
   parentsEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  validationStatus: myzod.boolean()
+  validationStatus: myzod.boolean(),
+  code: myzod.string()
 }).collectErrors();
 
 export const studentEntitySchema = myzod.object({
