@@ -5,7 +5,7 @@ import { Logger } from "../utils/logger";
 
 export const authGithub = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
-  logger.info('Mocked auth lambda');
+  logger.info('Authentication with Github');
 
   const fakeUrl = 'this is not url';
 
