@@ -2,28 +2,35 @@ import { APIGatewayProxyEvent } from "aws-lambda";
 import { Context } from 'aws-lambda/handler';
 import { LambdaResponse } from "../types/response";
 import { Logger } from "../utils/logger";
-import { authDtoSchema, StateEntity } from '../types/state';
+import { StateEntity } from '../types/state';
 import { ValidationError } from "myzod";
 import { badRequestError, internalLambdaError } from "../utils/errors";
 import { generateState } from "../utils/generators/state-generator";
 import { saveState } from '../utils/database/database';
 import { config } from '../config';
 
+
 const STATE_SIZE = 32;
 
 
 export const authGithub = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
-  logger.info('Authentication with Github');
+  const params = event.queryStringParameters || {};
+  let accountId: string;
+  logger.info('Authentication with Github - redirect lambda');
 
-  const body = JSON.parse(event.body);
+  if (params.accountId) {
+    accountId = params.accountId;
+  } else {
+    return badRequestError;
+  }
+
   const state = generateState(STATE_SIZE);
   let location = '';
 
   try {
-    const id = authDtoSchema.parse(body);
     const stateEntity: StateEntity = {
-      account_id: id.accountId,
+      account_id: accountId,
       state: state
     };
 
@@ -45,9 +52,9 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
   return {
     headers: {
       'Access-Control-Allow-Origin': 'newrelic.com',
-      'Location': ''
+      'Location': location
     },
     statusCode: 302,
-    body: location
+    body: ''
   };
 };
