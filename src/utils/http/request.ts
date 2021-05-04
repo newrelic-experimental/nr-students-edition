@@ -16,8 +16,6 @@ export const sendGetRequest = async <T>(url: string, token: string): Promise<T> 
   }
 };
 
-
-
 export const sendPostRequest = async <T>(url: string, body: GithubCredentials): Promise<T> => {
   try {
     const response = await fetch(url, {
