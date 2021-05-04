@@ -19,7 +19,7 @@ export const getAll = async (): Promise<ValidationHistory | undefined> => {
 };
 
 export const checkIfStateExists = async (state: string): Promise<any | undefined> => {
-  const result = await dbClient.query(`select exists(select 1 from contact where state = :state`,
+  const result = await dbClient.query(`select exists(select 1 from state where state = :state`,
   {
     state: state
   });
