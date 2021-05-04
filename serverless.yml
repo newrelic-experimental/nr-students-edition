@@ -61,6 +61,24 @@ functions:
           path: /github/auth
           method: get
           cors: true
+  user-data-github:
+    handler: src/functions/get-user-data/getUserData
+    description: Gets user data from the github api, checks if user is a student
+    memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
+    events:
+      - http:
+          path: /github/users
+          method: get
+          cors: true
   check-validation-status:
     handler: src/functions/check-validation-status.check
     description: Checks validation status based on given account id
