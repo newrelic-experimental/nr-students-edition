@@ -15,6 +15,9 @@ export const config = cleanEnv(
     DATABASE_RESOURCE_ARN: str(),
     DATABASE_SECRET_ARN: str(),
     DATABASE: str(),
+    GITHUB_URL: str(),
+    GITHUB_CLIENT_ID: str(),
+    GITHUB_SECRET: str()
   }
 );
 
@@ -24,4 +27,7 @@ export type AppConfig = Readonly<{
   DATABASE_RESOURCE_ARN: string;
   DATABASE_SECRET_ARN: string;
   DATABASE: string;
+  GITHUB_URL: string;
+  GITHUB_CLIENT_ID: string;
+  GITHUB_SECRET: string;
 }>;

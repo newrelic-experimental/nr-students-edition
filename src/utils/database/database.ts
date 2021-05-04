@@ -2,6 +2,7 @@ import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 import { StudentDTO } from '../../types/person';
+import { StateEntity } from '../../types/state';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -59,6 +60,20 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
         code: student.code
       },
     ],
+  });
+
+  return result;
+};
+
+export const saveState = async (stateEntity: StateEntity): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO state (account_id, state) VALUES (:account_id, :state)`,
+    parameters: [
+      {
+        account_id: stateEntity.account_id,
+        state: stateEntity.state
+      }
+    ]
   });
 
   return result;
