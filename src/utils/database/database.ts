@@ -27,6 +27,15 @@ export const checkIfStateExists = async (state: string): Promise<any | undefined
   return result;
 };
 
+export const getDataFromState = async (state: string): Promise<any | undefined> => {
+  const result = await dbClient.query(`select * from state where state = :state`,
+  {
+    state: state
+  });
+
+  return result;
+};
+
 export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
     `SELECT validation_status FROM validation_history WHERE account_id = :account_id`,
