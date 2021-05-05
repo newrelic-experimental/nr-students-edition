@@ -12,6 +12,17 @@ export const badRequestError: LambdaResponse = {
   }),
 };
 
+export const recordNotFound: LambdaResponse = {
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  statusCode: StatusCodes.NOT_FOUND,
+  body: JSON.stringify({
+    internalStatusCode: 40401,
+    message: 'Record not found in the database'
+  }),
+};
+
 export const internalLambdaError: LambdaResponse = {
   headers: {
     'Access-Control-Allow-Origin': '*'
