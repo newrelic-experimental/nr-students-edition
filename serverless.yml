@@ -62,7 +62,7 @@ functions:
           method: get
           cors: true
   user-data-github:
-    handler: src/functions/get-user-data/getUserData
+    handler: src/functions/get-user-data.getUserData
     description: Gets user data from the github api, checks if user is a student
     memorySize: 512
     iamRoleStatements:

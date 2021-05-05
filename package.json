@@ -53,7 +53,7 @@
   "dependencies": {
     "aws-sdk": "2.900.0",
     "data-api-client": "^1.2.0",
-    "dotenv": "^8.4.0",
+    "dotenv": "^8.5.1",
     "envalid": "^7.1.0",
     "http-status-codes": "^2.1.4",
     "myzod": "^1.6.1",
