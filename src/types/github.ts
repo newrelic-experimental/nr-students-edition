@@ -4,7 +4,7 @@ import myzod, { Infer } from 'myzod';
 export type GithubCredentials = {
   clientId: string;
   clientSecret: string;
-  accessToken: string;
+  code: string;
 };
 
 export const stateAndCodeSchema = myzod.object({
