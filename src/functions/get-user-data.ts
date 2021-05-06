@@ -29,14 +29,13 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     return recordNotFound;
   }
 
-  const url = 'https://github.com/login/oauth/access_token';
-  const body = {
+  const body: GithubCredentials = {
     client_id: config.GITHUB_CLIENT_ID,
     client_secret: config.GITHUB_SECRET,
     code: stateAndCode.code
-  } as GithubCredentials;
+  };
 
-  const data: AxiosResponse<{access_token: string}> = await axios(url, {
+  const data: AxiosResponse<{access_token: string}> = await axios(config.GITHUB_ACCESS_TOKEN_URL, {
     headers: {
       'Accept': 'application/json'
     },
@@ -46,8 +45,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   logger.info(`Obtained access token...`);
 
-  const userDataUrl = 'https://education.github.com/api/user';
-  const userData = await sendGetRequest(userDataUrl, data.data.access_token) as StudentResponseGithub;
+  const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, data.data.access_token) as StudentResponseGithub;
 
   logger.info(`Is a student: ${JSON.stringify(userData)}`);
 
