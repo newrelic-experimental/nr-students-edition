@@ -46,18 +46,6 @@ export const getValidationStatusByAccountId = async (accountId: string): Promise
   return result;
 };
 
-export const getValidationStatus = async (accountId: string): Promise<any | undefined> => {
-  const result = await dbClient.query(
-    'SELECT ::fields FROM ::table WHERE id = :account_id',
-    {
-      fields: ['validation_status'],
-      table: 'validation_history',
-      account_id: accountId
-    });
-
-  return result;
-};
-
 export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
     sql: `INSERT INTO validation_history (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status, code)
