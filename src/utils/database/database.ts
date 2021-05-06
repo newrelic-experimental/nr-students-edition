@@ -3,6 +3,7 @@ import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 import { StudentDTO } from '../../types/person';
 import { StateEntity } from '../../types/state';
+import { TokenEntity } from '../../types/github';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -19,7 +20,7 @@ export const getAll = async (): Promise<ValidationHistory | undefined> => {
 };
 
 export const checkIfStateExists = async (state: string): Promise<any | undefined> => {
-  const result = await dbClient.query(`select exists(select 1 from state where state = :state`,
+  const result = await dbClient.query(`select exists(select 1 from states where state = :state`,
   {
     state: state
   });
@@ -28,7 +29,7 @@ export const checkIfStateExists = async (state: string): Promise<any | undefined
 };
 
 export const getDataFromState = async (state: string): Promise<any | undefined> => {
-  const result = await dbClient.query(`select * from state where state = :state`,
+  const result = await dbClient.query(`select * from states where state = :state`,
   {
     state: state
   });
@@ -85,11 +86,25 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
 
 export const saveState = async (stateEntity: StateEntity): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO state (account_id, state) VALUES (:account_id, :state)`,
+    sql: `INSERT INTO states (account_id, state) VALUES (:account_id, :state)`,
     parameters: [
       {
         account_id: stateEntity.account_id,
         state: stateEntity.state
+      }
+    ]
+  });
+
+  return result;
+};
+
+export const saveAccessToken = async (tokenEntity: TokenEntity): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO tokens (account_id, access_token) VALUES (:account_id, :access_token)`,
+    parameters: [
+      {
+        account_id: tokenEntity.account_id,
+        access_token: tokenEntity.access_token
       }
     ]
   });
