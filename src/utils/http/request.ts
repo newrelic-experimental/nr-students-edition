@@ -1,35 +1,35 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 import { GithubCredentials } from '../../types/github';
 
-export const sendGetRequest = async <T>(url: string, token: string): Promise<T> => {
+
+export const sendPostRequest = async (url: string, body: GithubCredentials) => {
   try {
-    const response = await fetch(url, {
-      method: 'get',
-      headers: {
-        'Authorization': token
-      }
-    });
-
-    return response.json();
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-export const sendPostRequest = async <T>(url: string, body: GithubCredentials): Promise<T> => {
-  console.log(`Body: ${JSON.stringify(body)}`);
-
-  try {
-    const response = await fetch(url, {
-      method: 'post',
+    const data = await axios(url, {
       headers: {
         'Accept': 'application/json'
       },
-      body: JSON.stringify(body)
+      data: body,
+      method: 'POST'
     });
 
-    return response.json();
+    return data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
+  }
+};
+
+
+export const sendGetRequest = async (url: string, accessToken: string) => {
+  try {
+    const data = await axios(url, {
+      headers: {
+        'Authorization': accessToken
+      },
+      method: 'GET'
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
   }
 };

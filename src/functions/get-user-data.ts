@@ -3,12 +3,11 @@ import { LambdaResponse } from '../types/response';
 import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
 import { GithubCredentials, StateAndCode, StudentResponse, StudentResponseGithub, TokenEntity } from '../types/github';
-import { badRequestError, recordNotFound } from '../utils/errors';
+import { badRequestError, githubApiError, recordNotFound } from '../utils/errors';
 import { getDataFromState, saveAccessToken } from '../utils/database/database';
 import { State } from '../types/database';
-import { sendGetRequest } from '../utils/http/request';
 import { config } from '../config';
-import axios, { AxiosResponse } from 'axios';
+import { sendPostRequest, sendGetRequest } from '../utils/http/request';
 
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -16,6 +15,8 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   const params = event.queryStringParameters || {};
   const stateAndCode: StateAndCode = {};
+  let data: any;
+  let userData: StudentResponseGithub;
 
   if (params.state && params.code) {
     stateAndCode.state = params.state;
@@ -34,28 +35,28 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     client_secret: config.GITHUB_SECRET,
     code: stateAndCode.code
   };
+  try {
+    const data = await sendPostRequest(config.GITHUB_ACCESS_TOKEN_URL, body);
+    logger.info(`Obtained access token...`);
 
-  const data: AxiosResponse<{access_token: string}> = await axios(config.GITHUB_ACCESS_TOKEN_URL, {
-    headers: {
-      'Accept': 'application/json'
-    },
-    data: body,
-    method: 'POST'
-  });
-
-  logger.info(`Obtained access token...`);
-
-  const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, data.data.access_token) as StudentResponseGithub;
-
-  logger.info(`Is a student: ${JSON.stringify(userData)}`);
+    userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, data.data.access_token) as StudentResponseGithub;
+    logger.info(`Obtained user data...`);
+  } catch (error) {
+    logger.info(`Something went wrong with Github API: ${error.message}`);
+    return githubApiError;
+  }
 
   if (userData.student) {
+    logger.info('Saving access token to the database...');
+
     await saveAccessToken(
       {
         account_id: stateFromDB.records[0].account_id,
         access_token: data.data.access_token
       } as TokenEntity
     );
+
+    logger.info('Saved access token to the database...');
   }
 
   const response: StudentResponse = {

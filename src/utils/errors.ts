@@ -33,3 +33,14 @@ export const internalLambdaError: LambdaResponse = {
     message: 'Something went wrong, please check the logs to gather more information'
   }),
 };
+
+export const githubApiError: LambdaResponse = {
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  statusCode: StatusCodes.SERVICE_UNAVAILABLE,
+  body: JSON.stringify({
+    internalStatusCode: 50301,
+    message: 'Something went wrong with external API'
+  }),
+};
