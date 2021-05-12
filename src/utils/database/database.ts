@@ -3,6 +3,7 @@ import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 import { StudentDTO } from '../../types/person';
 import { StateEntity } from '../../types/state';
+import { TokenEntity } from '../../types/github';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -18,23 +19,29 @@ export const getAll = async (): Promise<ValidationHistory | undefined> => {
   return result;
 };
 
+export const checkIfStateExists = async (state: string): Promise<any | undefined> => {
+  const result = await dbClient.query(`select exists(select 1 from states where state = :state`,
+  {
+    state: state
+  });
+
+  return result;
+};
+
+export const getDataFromState = async (state: string): Promise<any | undefined> => {
+  const result = await dbClient.query(`select * from states where state = :state`,
+  {
+    state: state
+  });
+
+  return result;
+};
+
 export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
     `SELECT validation_status FROM validation_history WHERE account_id = :account_id`,
     { account_id: accountId }
   );
-
-  return result;
-};
-
-export const getValidationStatus = async (accountId: string): Promise<any | undefined> => {
-  const result = await dbClient.query(
-    'SELECT ::fields FROM ::table WHERE id = :account_id',
-    {
-      fields: ['validation_status'],
-      table: 'validation_history',
-      account_id: accountId
-    });
 
   return result;
 };
@@ -67,11 +74,25 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
 
 export const saveState = async (stateEntity: StateEntity): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO state (account_id, state) VALUES (:account_id, :state)`,
+    sql: `INSERT INTO states (account_id, state) VALUES (:account_id, :state)`,
     parameters: [
       {
         account_id: stateEntity.account_id,
         state: stateEntity.state
+      }
+    ]
+  });
+
+  return result;
+};
+
+export const saveAccessToken = async (tokenEntity: TokenEntity): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO tokens (account_id, access_token) VALUES (:account_id, :access_token)`,
+    parameters: [
+      {
+        account_id: tokenEntity.account_id,
+        access_token: tokenEntity.access_token
       }
     ]
   });
