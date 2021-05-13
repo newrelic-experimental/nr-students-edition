@@ -2,12 +2,13 @@ import { APIGatewayProxyEvent } from 'aws-lambda';
 import { LambdaResponse } from '../types/response';
 import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
-import { GithubCredentials, StateAndCode, StudentResponse, StudentResponseGithub, TokenEntity } from '../types/github';
-import { badRequestError, githubApiError, recordNotFound } from '../utils/errors';
-import { getDataFromState, saveAccessToken } from '../utils/database/database';
+import { GithubCredentials, StateAndCode, StudentResponseGithub, TokenEntity } from '../types/github';
+import { badRequestError, recordNotFound } from '../utils/errors';
+import { getDataFromState, saveAccessToken, saveValidationAttempt } from '../utils/database/database';
 import { State } from '../types/database';
 import { config } from '../config';
 import { sendPostRequest, sendGetRequest } from '../utils/http/request';
+import { StudentDTO, StudentEntity, ValidationStatus } from '../types/person';
 
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -15,8 +16,6 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   const params = event.queryStringParameters || {};
   const stateAndCode: StateAndCode = {};
-  let data: any;
-  let userData: StudentResponseGithub;
 
   if (params.state && params.code) {
     stateAndCode.state = params.state;
@@ -30,21 +29,24 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     return recordNotFound;
   }
 
+  logger.info(`STATE FROM DB: ${JSON.stringify(stateFromDB)}`);
+
   const body: GithubCredentials = {
     client_id: config.GITHUB_CLIENT_ID,
     client_secret: config.GITHUB_SECRET,
     code: stateAndCode.code
   };
-  try {
-    const data = await sendPostRequest(config.GITHUB_ACCESS_TOKEN_URL, body);
-    logger.info(`Obtained access token...`);
 
-    userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, data.data.access_token) as StudentResponseGithub;
-    logger.info(`Obtained user data...`);
-  } catch (error) {
-    logger.info(`Something went wrong with Github API: ${error.message}`);
-    return githubApiError;
-  }
+
+  const {data: {access_token}} = await sendPostRequest(config.GITHUB_ACCESS_TOKEN_URL, body);
+  logger.info(`Obtained access token...`);
+
+  logger.info(`Access token ${access_token}`);
+
+  const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL,access_token) as StudentResponseGithub;
+  logger.info(`Obtained user data...`);
+
+  logger.info(`USER DATA: ${userData}`);
 
   if (userData.student) {
     logger.info('Saving access token to the database...');
@@ -52,23 +54,37 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     await saveAccessToken(
       {
         account_id: stateFromDB.records[0].account_id,
-        access_token: data.data.access_token
+        access_token: access_token
       } as TokenEntity
     );
+
+    const preStudentData: StudentDTO = {
+      accountId: stateFromDB.records[0].account_id,
+      validationStatus: ValidationStatus.ongoingValidation
+    };
+
+    await saveValidationAttempt(preStudentData);
+
+    logger.info('Saved access token to the database...');
+  } else {
+    logger.info('Ineligible student');
+
+    const preStudentData: StudentEntity = {
+      account_id: stateFromDB.records[0].account_id,
+      validation_status: ValidationStatus.ineligible.toString()
+    };
+
+    await saveValidationAttempt(preStudentData);
 
     logger.info('Saved access token to the database...');
   }
 
-  const response: StudentResponse = {
-    account_id: stateFromDB.records[0].account_id,
-    student: userData.student
-  };
-
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
+      'Location': stateFromDB.records[0].redirect_to
     },
-    statusCode: 200,
-    body: JSON.stringify(response)
+    statusCode: 302,
+    body: ''
   };
 };

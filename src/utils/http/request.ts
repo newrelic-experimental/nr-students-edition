@@ -21,12 +21,14 @@ export const sendPostRequest = async (url: string, body: GithubCredentials) => {
 
 export const sendGetRequest = async (url: string, accessToken: string) => {
   try {
-    const data = await axios(url, {
+    const {data} = await axios(url, {
       headers: {
         'Authorization': accessToken
       },
       method: 'GET'
     });
+
+    console.log(`User data inside get: ${data}`);
 
     return data;
   } catch (error) {

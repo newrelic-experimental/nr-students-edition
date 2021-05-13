@@ -1,34 +1,39 @@
 import myzod, { Infer } from 'myzod';
 
+export enum ValidationStatus {
+  eligible = 'eligible',
+  ineligible = 'ineligible',
+  ongoingValidation = 'ongoing_validation'
+}
+
 export const studentDTOSchema = myzod.object({
   accountId: myzod.string(),
-  nrEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
-  userEmail: myzod.string().pattern(/\S+@\S+\.\S+/),
-  firstname: myzod.string(),
-  lastname: myzod.string(),
-  university: myzod.string(),
-  levelOfStudy: myzod.string(),
-  graduationDate: myzod.date(),
-  country: myzod.string(),
-  isThirteenYo: myzod.boolean(),
+  nrEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  userEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  firstname: myzod.string().optional(),
+  lastname: myzod.string().optional(),
+  university: myzod.string().optional(),
+  levelOfStudy: myzod.string().optional(),
+  graduationDate: myzod.date().optional(),
+  country: myzod.string().optional(),
+  isThirteenYo: myzod.boolean().optional(),
   parentsEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  validationStatus: myzod.boolean(),
-  code: myzod.string()
+  validationStatus: myzod.enum(ValidationStatus)
 }).collectErrors();
 
 export const studentEntitySchema = myzod.object({
   account_id: myzod.string(),
-  nr_email: myzod.string().pattern(/\S+@\S+\.\S+/),
-  user_email: myzod.string().pattern(/\S+@\S+\.\S+/),
-  name: myzod.string(),
-  surname: myzod.string(),
-  university: myzod.string(),
-  level_of_study: myzod.string(),
-  graduation_date: myzod.date(),
-  country: myzod.string(),
-  is_thirteen_yo: myzod.boolean(),
+  nr_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  user_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  name: myzod.string().optional(),
+  surname: myzod.string().optional(),
+  university: myzod.string().optional(),
+  level_of_study: myzod.string().optional(),
+  graduation_date: myzod.date().optional(),
+  country: myzod.string().optional(),
+  is_thirteen_yo: myzod.boolean().optional(),
   parents_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  validation_status: myzod.boolean()
+  validation_status: myzod.string()
 }).collectErrors();
 
 export type StudentDTO = Infer<typeof studentDTOSchema>;

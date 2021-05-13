@@ -1,8 +1,8 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO } from '../../types/person';
-import { StateEntity } from '../../types/state';
+import { StudentDTO, studentDTOSchema } from '../../types/person';
+import { StateEntity, stateEntitySchema } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 
 const databaseContext: DatabaseContext = {
@@ -46,10 +46,10 @@ export const getValidationStatusByAccountId = async (accountId: string): Promise
   return result;
 };
 
-export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
+export const updateStudentData = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
     sql: `INSERT INTO validation_history (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status, code)
-      VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status, :code)`,
+      VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status)`,
     parameters: [
       {
         account_id: student.accountId,
@@ -63,8 +63,22 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
         is_thirteen_yo: student.isThirteenYo,
         level_of_study: student.levelOfStudy,
         parents_email: student.parentsEmail || '',
-        validation_status: student.validationStatus,
-        code: student.code
+        validation_status: student.validationStatus
+      },
+    ],
+  });
+
+  return result;
+};
+
+export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_history (account_id, validation_status)
+      VALUES (:account_id, :validation_status)`,
+    parameters: [
+      {
+        account_id: student.accountId,
+        validation_status: student.validationStatus.toString()
       },
     ],
   });
