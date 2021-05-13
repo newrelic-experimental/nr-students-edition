@@ -41,7 +41,7 @@ functions:
     events:
       - http:
           path: /students
-          method: post
+          method: patch
           cors: true
   auth-github:
     handler: src/functions/auth.authGithub

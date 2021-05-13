@@ -48,8 +48,7 @@ export const getValidationStatusByAccountId = async (accountId: string): Promise
 
 export const updateStudentData = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO validation_history (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status, code)
-      VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status)`,
+    sql: `UPDATE validation_history SET nr_email = :nr_email, user_email = :user_email, name = :name, surname = :surname, university = :university, graduation_date = :graduation_date, country = :country, is_thirteen_yo = :is_thirteen_yo, level_of_study = :level_of_study, parents_email = :parents_email, validation_status = :validation_status WHERE account_id = :account_id`,
     parameters: [
       {
         account_id: student.accountId,
