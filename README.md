@@ -94,6 +94,7 @@ This lambad creates redirect link to authenticate with Github API.
 GET
 {
   accountId: string;
+  redirectTo: string;
 }
 ```
 

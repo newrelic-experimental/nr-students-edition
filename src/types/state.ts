@@ -2,7 +2,8 @@ import myzod, { Infer } from 'myzod';
 
 export const stateEntitySchema = myzod.object({
   account_id: myzod.string(),
-  state: myzod.string()
+  state: myzod.string(),
+  redirect_to: myzod.string()
 }).collectErrors();
 
 export const authDtoSchema = myzod.object({
