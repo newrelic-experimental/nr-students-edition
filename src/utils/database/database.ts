@@ -1,8 +1,8 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO, studentDTOSchema } from '../../types/person';
-import { StateEntity, stateEntitySchema } from '../../types/state';
+import { StudentDTO  } from '../../types/person';
+import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 
 const databaseContext: DatabaseContext = {
