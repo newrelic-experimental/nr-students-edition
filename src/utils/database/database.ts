@@ -13,7 +13,6 @@ const databaseContext: DatabaseContext = {
 
 const dbClient = DataApiClient(databaseContext);
 
-
 export const getAll = async (): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(`SELECT * FROM validation_history'`);
   return result;
@@ -39,7 +38,7 @@ export const getDataFromState = async (state: string): Promise<any | undefined> 
 
 export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
-    `SELECT validation_status FROM validation_history WHERE account_id = :account_id`,
+    `SELECT validation_status FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC`,
     { account_id: accountId }
   );
 
@@ -52,6 +51,7 @@ export const updateStudentData = async (student: StudentDTO): Promise<any | unde
     parameters: [
       {
         account_id: student.accountId,
+        github_id: student.githubId,
         nr_email: student.nrEmail,
         user_email: student.userEmail,
         name: student.firstname,

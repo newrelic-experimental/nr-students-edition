@@ -6,10 +6,13 @@ export enum ValidationStatus {
   ongoingValidation = 'ongoing_validation'
 }
 
+const EMAIL_PATTERN = /\S+@\S+\.\S+/;
+
 export const studentDTOSchema = myzod.object({
   accountId: myzod.string(),
-  nrEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  userEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  githubId: myzod.string(),
+  nrEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
+  userEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
   firstname: myzod.string().optional(),
   lastname: myzod.string().optional(),
   university: myzod.string().optional(),
@@ -17,14 +20,15 @@ export const studentDTOSchema = myzod.object({
   graduationDate: myzod.date().optional(),
   country: myzod.string().optional(),
   isThirteenYo: myzod.boolean().optional(),
-  parentsEmail: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  parentsEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
   validationStatus: myzod.enum(ValidationStatus)
 }).collectErrors();
 
 export const studentEntitySchema = myzod.object({
   account_id: myzod.string(),
-  nr_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
-  user_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  github_id: myzod.string(),
+  nr_email: myzod.string().pattern(EMAIL_PATTERN).optional(),
+  user_email: myzod.string().pattern(EMAIL_PATTERN).optional(),
   name: myzod.string().optional(),
   surname: myzod.string().optional(),
   university: myzod.string().optional(),
@@ -32,7 +36,7 @@ export const studentEntitySchema = myzod.object({
   graduation_date: myzod.date().optional(),
   country: myzod.string().optional(),
   is_thirteen_yo: myzod.boolean().optional(),
-  parents_email: myzod.string().pattern(/\S+@\S+\.\S+/).optional(),
+  parents_email: myzod.string().pattern(EMAIL_PATTERN).optional(),
   validation_status: myzod.string()
 }).collectErrors();
 

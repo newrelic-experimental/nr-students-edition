@@ -8,7 +8,7 @@ import { getDataFromState, saveAccessToken, saveValidationAttempt } from '../uti
 import { State } from '../types/database';
 import { config } from '../config';
 import { sendPostRequest, sendGetRequest } from '../utils/http/request';
-import { StudentDTO, StudentEntity, ValidationStatus } from '../types/person';
+import { StudentDTO, ValidationStatus } from '../types/person';
 
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -37,13 +37,14 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     code: stateAndCode.code
   };
 
-
   const {data: {access_token}} = await sendPostRequest(config.GITHUB_ACCESS_TOKEN_URL, body);
   logger.info(`Obtained access token...`);
 
   logger.info(`Access token ${access_token}`);
 
-  const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL,access_token) as StudentResponseGithub;
+  const { id } = await sendGetRequest(config.GITHUB_API_USER_URL, access_token);
+
+  const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, access_token) as StudentResponseGithub;
   logger.info(`Obtained user data...`);
 
   logger.info(`USER DATA: ${userData}`);
@@ -60,6 +61,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
+      githubId: id,
       validationStatus: ValidationStatus.ongoingValidation
     };
 
@@ -69,9 +71,10 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
   } else {
     logger.info('Ineligible student');
 
-    const preStudentData: StudentEntity = {
-      account_id: stateFromDB.records[0].account_id,
-      validation_status: ValidationStatus.ineligible.toString()
+    const preStudentData: StudentDTO = {
+      accountId: stateFromDB.records[0].account_id,
+      githubId: id,
+      validationStatus: ValidationStatus.ineligible
     };
 
     await saveValidationAttempt(preStudentData);

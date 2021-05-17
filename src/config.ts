@@ -18,6 +18,7 @@ export const config = cleanEnv(
     GITHUB_URL: str(),
     GITHUB_ACCESS_TOKEN_URL: str(),
     GITHUB_USER_DATA_URL: str(),
+    GITHUB_API_USER_URL: str(),
     GITHUB_CLIENT_ID: str(),
     GITHUB_SECRET: str()
   }
@@ -32,6 +33,7 @@ export type AppConfig = Readonly<{
   GITHUB_URL: string;
   GITHUB_ACCESS_TOKEN_URL: string;
   GITHUB_USER_DATA_URL: string;
+  GITHUB_API_USER_URL: string;
   GITHUB_CLIENT_ID: string;
   GITHUB_SECRET: string;
 }>;
