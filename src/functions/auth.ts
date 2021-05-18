@@ -61,7 +61,7 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
 
   return {
     headers: {
-      'Access-Control-Allow-Origin': 'newrelic.com',
+      'Access-Control-Allow-Origin': '*',
       'Location': location
     },
     statusCode: 302,

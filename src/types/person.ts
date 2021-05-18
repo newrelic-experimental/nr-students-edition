@@ -3,14 +3,15 @@ import myzod, { Infer } from 'myzod';
 export enum ValidationStatus {
   eligible = 'eligible',
   ineligible = 'ineligible',
-  ongoingValidation = 'ongoing_validation'
+  ongoingValidation = 'ongoing_validation',
+  ineligibleGithubAccountAlreadyUsed = 'ineligible_gh_already_used'
 }
 
 const EMAIL_PATTERN = /\S+@\S+\.\S+/;
 
 export const studentDTOSchema = myzod.object({
   accountId: myzod.string(),
-  githubId: myzod.string(),
+  githubId: myzod.string().optional(),
   nrEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
   userEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
   firstname: myzod.string().optional(),
@@ -21,12 +22,12 @@ export const studentDTOSchema = myzod.object({
   country: myzod.string().optional(),
   isThirteenYo: myzod.boolean().optional(),
   parentsEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
-  validationStatus: myzod.enum(ValidationStatus)
+  validationStatus: myzod.string()
 }).collectErrors();
 
 export const studentEntitySchema = myzod.object({
   account_id: myzod.string(),
-  github_id: myzod.string(),
+  github_id: myzod.string().optional(),
   nr_email: myzod.string().pattern(EMAIL_PATTERN).optional(),
   user_email: myzod.string().pattern(EMAIL_PATTERN).optional(),
   name: myzod.string().optional(),

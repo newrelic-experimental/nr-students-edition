@@ -7,7 +7,7 @@ import { badRequestError, recordNotFound } from '../utils/errors';
 import { getDataFromState, saveAccessToken, saveValidationAttempt } from '../utils/database/database';
 import { State } from '../types/database';
 import { config } from '../config';
-import { sendPostRequest, sendGetRequest } from '../utils/http/request';
+import { sendPostRequest, sendGetRequest, sendGetRequest2 } from '../utils/http/request';
 import { StudentDTO, ValidationStatus } from '../types/person';
 
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -42,8 +42,6 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   logger.info(`Access token ${access_token}`);
 
-  const { id } = await sendGetRequest(config.GITHUB_API_USER_URL, access_token);
-
   const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, access_token) as StudentResponseGithub;
   logger.info(`Obtained user data...`);
 
@@ -51,6 +49,10 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   if (userData.student) {
     logger.info('Saving access token to the database...');
+
+    logger.info('Getting github id');
+    const { id } = await sendGetRequest2(config.GITHUB_API_USER_URL, access_token);
+    logger.info(`Github ID: ${id}`);
 
     await saveAccessToken(
       {
@@ -65,7 +67,18 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
       validationStatus: ValidationStatus.ongoingValidation
     };
 
-    await saveValidationAttempt(preStudentData);
+    try {
+      await saveValidationAttempt(preStudentData);
+    } catch (error) {
+      logger.error(error.message);
+
+      const preStudentData: StudentDTO = {
+        accountId: stateFromDB.records[0].account_id,
+        validationStatus: ValidationStatus.ineligibleGithubAccountAlreadyUsed
+      };
+
+      logger.info('Account already exists');
+    }
 
     logger.info('Saved access token to the database...');
   } else {
@@ -73,7 +86,6 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
-      githubId: id,
       validationStatus: ValidationStatus.ineligible
     };
 

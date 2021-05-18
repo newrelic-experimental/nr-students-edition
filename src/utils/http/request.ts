@@ -35,3 +35,21 @@ export const sendGetRequest = async (url: string, accessToken: string) => {
     throw new Error(error.message);
   }
 };
+
+
+export const sendGetRequest2 = async (url: string, accessToken: string) => {
+  try {
+    const {data} = await axios(url, {
+      headers: {
+        'Authorization': `token ${accessToken}`
+      },
+      method: 'GET'
+    });
+
+    console.log(`User data inside get: ${data}`);
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
