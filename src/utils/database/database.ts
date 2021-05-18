@@ -1,7 +1,7 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO  } from '../../types/person';
+import { StudentDTO, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 
@@ -78,10 +78,24 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
     parameters: [
       {
         account_id: student.accountId,
-        github_id: student.githubId,
+        github_id: student.githubId || null,
         validation_status: student.validationStatus.toString()
       },
     ],
+  });
+
+  return result;
+};
+
+export const deleteValidationAttempt = async (accountId: string): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `DELETE FROM validation_history WHERE account_id = :account_id AND validation_status = :validation_status`,
+    parameters: [
+      {
+        account_id: accountId,
+        validation_status: ValidationStatus.ongoingValidation.toString()
+      }
+    ]
   });
 
   return result;

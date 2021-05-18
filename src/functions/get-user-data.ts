@@ -77,6 +77,8 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
         validationStatus: ValidationStatus.ineligibleGithubAccountAlreadyUsed
       };
 
+      await saveValidationAttempt(preStudentData);
+
       logger.info('Account already exists');
     }
 
