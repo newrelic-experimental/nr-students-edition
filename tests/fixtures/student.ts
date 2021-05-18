@@ -24,7 +24,7 @@ export const studentFixture = {
     isThirteenYo: false,
     graduationDate: new Date('21.03.2022'),
     levelOfStudy: "Student",
-    validationStatus: "false",
+    validationStatus: false,
     university: "The Example University"
   } as unknown,
 };
