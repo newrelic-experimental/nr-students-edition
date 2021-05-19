@@ -13,6 +13,7 @@ import { StudentDTO, ValidationStatus } from '../types/person';
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
   logger.info(`Getting user data from Github`);
+  logger.info(`Event: ${JSON.stringify(event)}`);
 
   const params = event.queryStringParameters || {};
   const stateAndCode: StateAndCode = {};
@@ -29,7 +30,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     return recordNotFound;
   }
 
-  logger.info(`STATE FROM DB: ${JSON.stringify(stateFromDB)}`);
+  logger.info('Obtained state from database...');
 
   const body: GithubCredentials = {
     client_id: config.GITHUB_CLIENT_ID,
@@ -40,19 +41,15 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
   const {data: {access_token}} = await sendPostRequest(config.GITHUB_ACCESS_TOKEN_URL, body);
   logger.info(`Obtained access token...`);
 
-  logger.info(`Access token ${access_token}`);
-
   const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, access_token) as StudentResponseGithub;
   logger.info(`Obtained user data...`);
-
-  logger.info(`USER DATA: ${userData}`);
 
   if (userData.student) {
     logger.info('Saving access token to the database...');
 
-    logger.info('Getting github id');
+    logger.info('Getting github id...');
     const { id } = await sendGetRequestWithToken(config.GITHUB_API_USER_URL, access_token);
-    logger.info(`Github ID: ${id}`);
+    logger.info('Obtained github id...');
 
     await saveAccessToken(
       {
