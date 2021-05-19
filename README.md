@@ -21,18 +21,152 @@ After setting up the AWS credentials the user can use command `sls deploy` to de
 WARNING!
 If you have multiple AWS configs you should use command `sls deploy --aws-profile <profile-name>`
 
-
 ## Usage
->[**Optional** - Include more thorough instructions on how to use the software. This section might not be needed if the Getting Started section is enough. Remove this section if it's not needed.]
+The repository contains lambdas to perform validation if user is a student or a teacher. Below there is description of each lambda in this project.
+
+### Check validation status lambda
+This lambda check if the user already validates. If there is no user entry in the database lambda returns no content.
 
 
-## Building
+<b>URL: .../check</b>
+<b>Requests</b>
 
->[**Optional** - Include this section if users will need to follow specific instructions to build the software from source. Be sure to include any third party build dependencies that need to be installed separately. Remove this section if it's not needed.]
+```
+GET
+{
+  accountId: string;
+}
+```
+
+<b>Response</b>
+```
+204 - No Content
+
+or
+
+200 - OK
+true / false
+```
+
+### Delete student data when user clicks cancel on the form
+This lambda is used to delete user data from the database.
+
+<b>URL: .../students</b>
+<b>Request</b>
+
+```
+POST
+{
+  accountId: string;
+}
+```
+
+<b>Response</b>
+```
+200 - OK
+```
+
+<b>Possible errors</b>
+```
+400 - Bad parameters provided
+500 - Internal lambda error
+```
+
+### Save student data lambda
+This lambda is used to save user data to the database.
+
+<b>URL: .../students</b>
+<b>Request</b>
+
+```
+POST
+{
+  accountId: string;
+  nrEmail: email;
+  userEmail: string;
+  firstname: string;
+  lastname: string;
+  university: string;
+  levelOfStudy: string;
+  graduationDate: string;
+  country: string;
+  isThirteenYo: boolean;
+  parentsEmail: email;
+  validationStatus: boolean;
+  code: string;
+}
+```
+
+<b>Response</b>
+```
+201 - CREATED
+```
+
+<b>Possible errors</b>
+```
+400 - Bad parameters provided
+500 - Internal lambda error
+```
+
+### Authenticate Github
+This lambad creates redirect link to authenticate with Github API.
+
+<b>URL: .../github/auth</b>
+<b>Request</b>
+
+```
+GET
+{
+  accountId: string;
+  redirectTo: string;
+}
+```
+
+<b>Response</b>
+```
+{
+  302 - Found
+  In header there is redirect url to github auth
+}
+```
+
+<b>Possible errors</b>
+```
+400 - Bad parameters provided
+500 - Internal lambda error
+```
+
+### Get user data
+This lambda fetch the data from Github API and returns the information if user is a student or a teacher.
+
+<b>URL: .../github/users</b>
+<b>Request</b>
+
+```
+GET
+{
+  state: string;
+  code: string;
+}
+```
+
+<b>Response</b>
+```
+{
+  account_id: string;
+  student: boolean;
+}
+```
+
+<b>Possible errors</b>
+```
+400 - Bad parameters provided
+500 - Internal Lambda error
+503 - Something went wrong with Github API
+```
 
 ## Testing
-
->[**Optional** - Include instructions on how to run tests if we include tests with the codebase. Remove this section if it's not needed.]
+To run the tests use ```npm test``` command on the project.
 
 ## Support
 
@@ -51,8 +185,7 @@ As noted in our [security policy](../../security/policy), New Relic is committed
 If you believe you have found a security vulnerability in this project or any of New Relic's products or websites, we welcome and greatly appreciate you reporting it to New Relic through [HackerOne](https://hackerone.com/newrelic).
 
 ## License
-[Project Name] is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
->[If applicable: The [project name] also uses source code from third-party libraries. You can find full details on which libraries are used and the terms under which they are licensed in the third-party notices document.]
+This project is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
 
 ## Contributors ✨
 

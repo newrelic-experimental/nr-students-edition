@@ -41,7 +41,25 @@ functions:
     events:
       - http:
           path: /students
-          method: post
+          method: patch
+          cors: true
+  remove-data:
+    handler: src/functions/delete-on-cancel.deleteOnCancel
+    description: Deletes record from database when user clicks cancel
+    memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
+    events:
+      - http:
+          path: /students
+          method: delete
           cors: true
   auth-github:
     handler: src/functions/auth.authGithub
@@ -59,6 +77,24 @@ functions:
     events:
       - http:
           path: /github/auth
+          method: get
+          cors: true
+  user-data-github:
+    handler: src/functions/get-user-data.getUserData
+    description: Gets user data from the github api, checks if user is a student
+    memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
+    events:
+      - http:
+          path: /github/users
           method: get
           cors: true
   check-validation-status:

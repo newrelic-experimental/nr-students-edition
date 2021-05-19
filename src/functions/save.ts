@@ -5,7 +5,8 @@ import { Context } from 'aws-lambda/handler';
 import { StudentDTO, studentDTOSchema } from "../types/person";
 import { ValidationError } from "myzod";
 import { badRequestError, internalLambdaError } from "../utils/errors";
-import { saveValidationAttempt } from '../utils/database/database';
+import { updateStudentData } from '../utils/database/database';
+import StatusCode from 'http-status-codes';
 
 
 export const save = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -16,13 +17,15 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
   // TODO: Write DTO to Entity conversion and apply for the database
 
   let student: StudentDTO = null;
-  logger.info('Save user data...');
+  logger.info('Save user data lambda...');
 
   try {
     student = studentDTOSchema.parse(body);
     logger.info(JSON.stringify(student));
 
-    await saveValidationAttempt(student);
+    logger.info('Saving user data...');
+
+    await updateStudentData(student);
 
     logger.info('Saved students data to the database');
   } catch (error) {
@@ -40,7 +43,7 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    statusCode: 201,
+    statusCode: StatusCode.CREATED,
     body: ''
   };
 };

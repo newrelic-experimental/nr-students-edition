@@ -11,9 +11,8 @@ export const studentFixture = {
     isThirteenYo: false,
     graduationDate: new Date('21.03.2022'),
     levelOfStudy: "Student",
-    validationStatus: false,
-    university: "The Example University",
-    code: "xyz123"
+    validationStatus: "eligible",
+    university: "The Example University"
   } as StudentDTO,
   wrongValueForValidationStatus: {
     accountId: "1",
@@ -25,8 +24,7 @@ export const studentFixture = {
     isThirteenYo: false,
     graduationDate: new Date('21.03.2022'),
     levelOfStudy: "Student",
-    validationStatus: "false",
-    university: "The Example University",
-    code: "xyzvvv"
+    validationStatus: false,
+    university: "The Example University"
   } as unknown,
 };
