@@ -48,10 +48,34 @@ or
 true / false
 ```
 
+### Delete student data when user clicks cancel on the form
+This lambda is used to delete user data from the database.
+
+<b>URL: .../students</b>
+<b>Request</b>
+
+```
+POST
+{
+  accountId: string;
+}
+```
+
+<b>Response</b>
+```
+200 - OK
+```
+
+<b>Possible errors</b>
+```
+400 - Bad parameters provided
+500 - Internal lambda error
+```
+
 ### Save student data lambda
 This lambda is used to save user data to the database.
 
-<b>URL: .../save</b>
+<b>URL: .../students</b>
 <b>Request</b>
 
 ```
