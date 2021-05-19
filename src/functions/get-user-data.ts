@@ -13,7 +13,6 @@ import { StudentDTO, ValidationStatus } from '../types/person';
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
   logger.info(`Getting user data from Github`);
-  logger.info(`Event: ${JSON.stringify(event)}`);
 
   const params = event.queryStringParameters || {};
   const stateAndCode: StateAndCode = {};
