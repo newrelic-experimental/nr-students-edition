@@ -6,6 +6,7 @@ import { StudentDTO, studentDTOSchema } from "../types/person";
 import { ValidationError } from "myzod";
 import { badRequestError, internalLambdaError } from "../utils/errors";
 import { updateStudentData } from '../utils/database/database';
+import StatusCode from 'http-status-codes';
 
 
 export const save = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -42,7 +43,7 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    statusCode: 201,
+    statusCode: StatusCode.CREATED,
     body: ''
   };
 };

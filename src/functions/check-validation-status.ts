@@ -5,6 +5,7 @@ import { Context } from 'aws-lambda/handler';
 import { badRequestError } from '../utils/errors';
 import { getValidationStatusByAccountId } from '../utils/database/database';
 import { convertEntityToDTO } from '../utils/converters/entity-converter';
+import StatusCode from 'http-status-codes';
 
 export const check = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -37,7 +38,7 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    statusCode: 200,
+    statusCode: StatusCode.OK,
     body: JSON.stringify(studentDTO.validationStatus)
   };
 };

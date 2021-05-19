@@ -7,7 +7,7 @@ import { badRequestError, recordNotFound } from '../utils/errors';
 import { getDataFromState, saveAccessToken, saveValidationAttempt } from '../utils/database/database';
 import { State } from '../types/database';
 import { config } from '../config';
-import { sendPostRequest, sendGetRequest, sendGetRequest2 } from '../utils/http/request';
+import { sendPostRequest, sendGetRequest, sendGetRequestWithToken } from '../utils/http/request';
 import { StudentDTO, ValidationStatus } from '../types/person';
 
 export const getUserData = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -51,7 +51,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     logger.info('Saving access token to the database...');
 
     logger.info('Getting github id');
-    const { id } = await sendGetRequest2(config.GITHUB_API_USER_URL, access_token);
+    const { id } = await sendGetRequestWithToken(config.GITHUB_API_USER_URL, access_token);
     logger.info(`Github ID: ${id}`);
 
     await saveAccessToken(

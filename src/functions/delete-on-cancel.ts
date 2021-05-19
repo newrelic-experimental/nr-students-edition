@@ -4,6 +4,7 @@ import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
 import { badRequestError, internalLambdaError } from '../utils/errors';
 import { deleteValidationAttempt } from '../utils/database/database';
+import StatusCode from 'http-status-codes';
 
 
 export const deleteOnCancel = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
@@ -37,7 +38,7 @@ export const deleteOnCancel = async (event: APIGatewayProxyEvent, context: Conte
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    statusCode: 200,
+    statusCode: StatusCode.OK,
     body: ''
   };
 };
