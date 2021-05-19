@@ -28,8 +28,6 @@ export const sendGetRequest = async (url: string, accessToken: string) => {
       method: 'GET'
     });
 
-    console.log(`User data inside get: ${data}`);
-
     return data;
   } catch (error) {
     throw new Error(error.message);
