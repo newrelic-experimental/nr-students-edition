@@ -3,6 +3,7 @@ import { StudentEntity, StudentDTO } from '../../types/person';
 export const convertEntityToDTO = (entity: StudentEntity): StudentDTO => {
   const dto: StudentDTO = {
     accountId: entity.account_id,
+    githubId: entity.github_id,
     nrEmail: entity.nr_email,
     userEmail: entity.user_email,
     firstname: entity.name,

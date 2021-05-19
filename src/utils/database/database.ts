@@ -1,7 +1,7 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO } from '../../types/person';
+import { StudentDTO, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 
@@ -12,7 +12,6 @@ const databaseContext: DatabaseContext = {
 };
 
 const dbClient = DataApiClient(databaseContext);
-
 
 export const getAll = async (): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(`SELECT * FROM validation_history'`);
@@ -39,17 +38,18 @@ export const getDataFromState = async (state: string): Promise<any | undefined> 
 
 export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
-    `SELECT validation_status FROM validation_history WHERE account_id = :account_id`,
+    `SELECT validation_status FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC`,
     { account_id: accountId }
   );
 
   return result;
 };
 
-export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
+export const updateStudentData = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO validation_history (account_id, nr_email, user_email, name, surname, university, graduation_date, country, is_thirteen_yo, level_of_study, parents_email, validation_status, code)
-      VALUES (:account_id, :nr_email, :user_email, :name, :surname, :university, :graduation_date, :country, :is_thirteen_yo, :level_of_study, :parents_email, :validation_status, :code)`,
+    sql: `UPDATE validation_history
+      SET nr_email = :nr_email, user_email = :user_email, name = :name, surname = :surname, university = :university, graduation_date = :graduation_date, country = :country, is_thirteen_yo = :is_thirteen_yo, level_of_study = :level_of_study, parents_email = :parents_email, validation_status = :validation_status
+      WHERE id = (SELECT id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
     parameters: [
       {
         account_id: student.accountId,
@@ -63,8 +63,7 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
         is_thirteen_yo: student.isThirteenYo,
         level_of_study: student.levelOfStudy,
         parents_email: student.parentsEmail || '',
-        validation_status: student.validationStatus,
-        code: student.code
+        validation_status: student.validationStatus
       },
     ],
   });
@@ -72,13 +71,44 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
   return result;
 };
 
+export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_history (account_id, validation_status, github_id)
+      VALUES (:account_id, :validation_status, :github_id)`,
+    parameters: [
+      {
+        account_id: student.accountId,
+        github_id: student.githubId || null,
+        validation_status: student.validationStatus.toString()
+      },
+    ],
+  });
+
+  return result;
+};
+
+export const deleteValidationAttempt = async (accountId: string): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `DELETE FROM validation_history WHERE account_id = :account_id AND validation_status = :validation_status`,
+    parameters: [
+      {
+        account_id: accountId,
+        validation_status: ValidationStatus.ongoingValidation.toString()
+      }
+    ]
+  });
+
+  return result;
+};
+
 export const saveState = async (stateEntity: StateEntity): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO states (account_id, state) VALUES (:account_id, :state)`,
+    sql: `INSERT INTO states (account_id, state, redirect_to) VALUES (:account_id, :state, :redirect_to)`,
     parameters: [
       {
         account_id: stateEntity.account_id,
-        state: stateEntity.state
+        state: stateEntity.state,
+        redirect_to: stateEntity.redirect_to
       }
     ]
   });
