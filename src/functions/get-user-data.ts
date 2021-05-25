@@ -3,7 +3,7 @@ import { LambdaResponse } from '../types/response';
 import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
 import { GithubCredentials, StateAndCode, StudentResponseGithub, TokenEntity } from '../types/github';
-import { badRequestError, recordNotFound } from '../utils/errors';
+import { badRequestError, handleGithubCancel, recordNotFound } from '../utils/errors';
 import { getDataFromState, saveAccessToken, saveValidationAttempt } from '../utils/database/database';
 import { State } from '../types/database';
 import { config } from '../config';
@@ -16,6 +16,12 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
   const params = event.queryStringParameters || {};
   const stateAndCode: StateAndCode = {};
+
+  if (params.state && params.error) {
+    const stateFromDB = await getDataFromState(params.state) as State;
+    return handleGithubCancel(stateFromDB.records[0].redirect_to);
+  }
+
 
   if (params.state && params.code) {
     stateAndCode.state = params.state;
