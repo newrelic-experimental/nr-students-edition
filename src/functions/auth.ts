@@ -25,11 +25,13 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
   const params = event.queryStringParameters || {};
   let accountId: string;
   let redirectTo: string;
+  let accountType: string;
   logger.info('Authentication with Github - redirect lambda');
 
   if (params.accountId) {
     accountId = params.accountId;
     redirectTo = params.redirectTo;
+    accountType = params.accountType;
   } else {
     return badRequestError;
   }
