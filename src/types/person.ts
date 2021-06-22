@@ -23,6 +23,7 @@ export const studentDTOSchema = myzod.object({
   isThirteenYo: myzod.boolean().optional(),
   parentsEmail: myzod.string().optional(),
   validationStatus: myzod.string(),
+  accountType: myzod.string()
 
 }).collectErrors();
 
@@ -39,7 +40,8 @@ export const studentEntitySchema = myzod.object({
   country: myzod.string().optional(),
   is_thirteen_yo: myzod.boolean().optional(),
   parents_email: myzod.string().optional(),
-  validation_status: myzod.string()
+  validation_status: myzod.string(),
+  account_type: myzod.string()
 }).collectErrors();
 
 export type StudentDTO = Infer<typeof studentDTOSchema>;
