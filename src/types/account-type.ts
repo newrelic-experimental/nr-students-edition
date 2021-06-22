@@ -1,4 +1,1 @@
-export enum AccountType {
-  Student = 'student',
-  Teacher = 'teacher'
-}
+export type AccountType = 'student' | 'teacher';
