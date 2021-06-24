@@ -13,7 +13,8 @@ export const stateAndCodeSchema = myzod.object({
 }).collectErrors();
 
 export const studentResponseSchema = myzod.object({
-  student: myzod.boolean()
+  student: myzod.boolean(),
+  faculty: myzod.boolean()
 });
 
 export const tokenEntitySchema = myzod.object({

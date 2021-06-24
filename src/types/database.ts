@@ -16,3 +16,8 @@ export type State = {
 };
 
 export type ValidationStatus = boolean;
+
+export type StatusAndAccountType = {
+  validationStatus: string,
+  accountType: string
+};

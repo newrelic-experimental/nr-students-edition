@@ -10,8 +10,4 @@ describe('Person type validation tests', () => {
   it('Each fields are provided, parse shouldn\'t throw ValidationError', () => {
     expect(() => studentDTOSchema.parse(studentFixture.fullObject)).not.toThrow(ValidationError);
   });
-
-  it('Wrong type of validation status, should return ValidationError', () => {
-    expect(() => studentDTOSchema.parse(studentFixture.wrongValueForValidationStatus)).toThrow(ValidationError);
-  });
 });

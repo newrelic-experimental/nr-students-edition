@@ -6,6 +6,7 @@ import { badRequestError } from '../utils/errors';
 import { getValidationStatusByAccountId } from '../utils/database/database';
 import { convertEntityToDTO } from '../utils/converters/entity-converter';
 import StatusCode from 'http-status-codes';
+import { StatusAndAccountType } from '../types/database';
 
 export const check = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
@@ -33,12 +34,16 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
   }
 
   const studentDTO = convertEntityToDTO(validationHistory.records[0]);
+  const result: StatusAndAccountType = {
+    validationStatus: studentDTO.validationStatus,
+    accountType: studentDTO.accountType
+  };
 
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
     statusCode: StatusCode.OK,
-    body: JSON.stringify(studentDTO.validationStatus)
+    body: JSON.stringify(result)
   };
 };

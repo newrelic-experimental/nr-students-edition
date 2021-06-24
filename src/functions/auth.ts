@@ -8,6 +8,7 @@ import { badRequestError, internalLambdaError } from "../utils/errors";
 import { generateState } from "../utils/generators/state-generator";
 import { saveState } from '../utils/database/database';
 import { config } from '../config';
+import { AccountType } from "../types/account-type";
 
 
 const STATE_SIZE = 32;
@@ -25,11 +26,13 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
   const params = event.queryStringParameters || {};
   let accountId: string;
   let redirectTo: string;
+  let accountType: string;
   logger.info('Authentication with Github - redirect lambda');
 
   if (params.accountId) {
     accountId = params.accountId;
     redirectTo = params.redirectTo;
+    accountType = params.accountType;
   } else {
     return badRequestError;
   }
@@ -41,7 +44,8 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
     const stateEntity: StateEntity = {
       account_id: accountId,
       state: state,
-      redirect_to: redirectTo
+      redirect_to: redirectTo,
+      account_type: accountType as AccountType
     };
 
     await saveState(stateEntity);

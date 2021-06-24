@@ -23,7 +23,8 @@ export const sendGetRequest = async (url: string, accessToken: string) => {
   try {
     const { data } = await axios(url, {
       headers: {
-        'Authorization': accessToken
+        'Authorization': accessToken,
+        'faculty-check-preview': true
       },
       method: 'GET'
     });

@@ -44,3 +44,14 @@ export const githubApiError: LambdaResponse = {
     message: 'Something went wrong with external API'
   }),
 };
+
+export const handleGithubCancel = (redirectTo: string): LambdaResponse => {
+  return {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Location': redirectTo
+    },
+    statusCode: 302,
+    body: ''
+  };
+};

@@ -103,12 +103,13 @@ export const deleteValidationAttempt = async (accountId: string): Promise<any | 
 
 export const saveState = async (stateEntity: StateEntity): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO states (account_id, state, redirect_to) VALUES (:account_id, :state, :redirect_to)`,
+    sql: `INSERT INTO states (account_id, state, redirect_to, account_type) VALUES (:account_id, :state, :redirect_to, :account_type)`,
     parameters: [
       {
         account_id: stateEntity.account_id,
         state: stateEntity.state,
-        redirect_to: stateEntity.redirect_to
+        redirect_to: stateEntity.redirect_to,
+        account_type: stateEntity.account_type
       }
     ]
   });
