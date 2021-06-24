@@ -18,10 +18,9 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
   const stateAndCode: StateAndCode = {};
 
   if (params.state && params.error) {
-    const stateFromDB = await getDataFromState(params.state) as State; // TODO change model to also get the account_type
+    const stateFromDB = await getDataFromState(params.state) as State;
     return handleGithubCancel(stateFromDB.records[0].redirect_to);
   }
-
 
   if (params.state && params.code) {
     stateAndCode.state = params.state;
@@ -51,7 +50,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
   const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, access_token) as StudentResponseGithub;
   logger.info(`Obtained user data...`);
 
-  if (userData.student) {
+  if ((accountType === 'student' && userData.student) || (accountType === 'teacher' && userData.faculty)) {
     logger.info('Saving access token to the database...');
 
     logger.info('Getting github id...');
@@ -87,8 +86,8 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     }
 
     logger.info('Saved access token to the database...');
-  } else { // TODO Discuss how to handle teacher statement, what in case of ineligible
-    logger.info('Ineligible student');
+  } else {
+    logger.info('Ineligible user');
 
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
