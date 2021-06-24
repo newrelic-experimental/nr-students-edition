@@ -22,7 +22,6 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     return handleGithubCancel(stateFromDB.records[0].redirect_to);
   }
 
-
   if (params.state && params.code) {
     stateAndCode.state = params.state;
     stateAndCode.code = params.code;
@@ -35,7 +34,9 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     return recordNotFound;
   }
 
-  logger.info('Obtained state from database...');
+  const accountType = stateFromDB.records[0].account_type;
+
+  logger.info('Obtained state data from database...');
 
   const body: GithubCredentials = {
     client_id: config.GITHUB_CLIENT_ID,
@@ -49,7 +50,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
   const userData = await sendGetRequest(config.GITHUB_USER_DATA_URL, access_token) as StudentResponseGithub;
   logger.info(`Obtained user data...`);
 
-  if (userData.student) {
+  if ((accountType === 'student' && userData.student) || (accountType === 'teacher' && userData.faculty)) {
     logger.info('Saving access token to the database...');
 
     logger.info('Getting github id...');
@@ -86,7 +87,7 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
     logger.info('Saved access token to the database...');
   } else {
-    logger.info('Ineligible student');
+    logger.info('Ineligible user');
 
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
