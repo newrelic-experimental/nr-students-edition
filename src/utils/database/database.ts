@@ -73,13 +73,14 @@ export const updateStudentData = async (student: StudentDTO): Promise<any | unde
 
 export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
-    sql: `INSERT INTO validation_history (account_id, validation_status, github_id)
-      VALUES (:account_id, :validation_status, :github_id)`,
+    sql: `INSERT INTO validation_history (account_id, validation_status, github_id, account_type)
+      VALUES (:account_id, :validation_status, :github_id, :account_type)`,
     parameters: [
       {
         account_id: student.accountId,
         github_id: student.githubId || null,
-        validation_status: student.validationStatus.toString()
+        validation_status: student.validationStatus.toString(),
+        account_type: student.accountType
       },
     ],
   });
