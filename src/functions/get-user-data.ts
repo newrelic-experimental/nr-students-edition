@@ -67,7 +67,8 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
       githubId: id,
-      validationStatus: ValidationStatus.ongoingValidation
+      validationStatus: ValidationStatus.ongoingValidation,
+      accountType: accountType
     };
 
     try {
