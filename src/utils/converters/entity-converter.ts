@@ -14,7 +14,8 @@ export const convertEntityToDTO = (entity: StudentEntity): StudentDTO => {
     country: entity.country,
     isThirteenYo: entity.is_thirteen_yo,
     parentsEmail: entity.parents_email,
-    validationStatus: entity.validation_status
+    validationStatus: entity.validation_status,
+    accountType: entity.account_type
   };
 
   return dto;

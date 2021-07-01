@@ -38,7 +38,7 @@ export const getDataFromState = async (state: string): Promise<any | undefined> 
 
 export const getValidationStatusByAccountId = async (accountId: string): Promise<ValidationHistory | undefined> => {
   const result = await dbClient.query(
-    `SELECT validation_status FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC`,
+    `SELECT validation_status, account_type FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC`,
     { account_id: accountId }
   );
 
