@@ -19,7 +19,7 @@ export const getValidationHistory = async (event: APIGatewayProxyEvent, context:
     return badRequestError;
   }
 
-  try {
+
     const validationHistory: ValidationHistoryRequest = {
       accountId: params.accountId,
       startDate: new Date(params.startDate),
@@ -38,10 +38,6 @@ export const getValidationHistory = async (event: APIGatewayProxyEvent, context:
       return badRequestError;
     }
 
-  } catch (error) {
-    logger.error(error.message);
-    return badRequestError;
-  }
 
   return {
     headers: {
