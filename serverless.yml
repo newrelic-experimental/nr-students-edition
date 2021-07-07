@@ -119,3 +119,25 @@ functions:
             parameters:
               querystrings:
                 accountId: true
+  validation-history:
+    handler: src/functions/validation-history.getValidationHistory
+    description: Gets validation history for given account id
+    memorySize: 512
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - rds-data:*
+        Resource: "arn:aws:rds:*:*:cluster:${env:DATABASE_CLUSTER_NAME}"
+      - Effect: "Allow"
+        Action:
+          - secretsmanager:*
+        Resource: "arn:aws:secretsmanager:*:*:*"
+    events:
+      - http:
+          path: /history
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                accountId: true
