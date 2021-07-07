@@ -38,7 +38,7 @@ export const createSql = (params: ValidationHistoryRequest, isCountQuery: boolea
   return query;
 };
 
-const createQueryBegin = (isCountQuery: boolean): string => {
+export const createQueryBegin = (isCountQuery: boolean): string => {
   if (isCountQuery) {
     return `SELECT COUNT(*) FROM validation_history `;
   }

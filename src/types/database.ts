@@ -21,3 +21,8 @@ export type StatusAndAccountType = {
   validationStatus: string,
   accountType: string
 };
+
+export type ValidationHistoryResponse = {
+  attempts: Array<ValidationHistory>;
+  records: number;
+};
