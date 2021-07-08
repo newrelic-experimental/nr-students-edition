@@ -6,8 +6,10 @@ import { Logger } from "../utils/logger";
 import { badRequestError } from "../utils/errors";
 import { ValidationHistoryRequest } from "../types/validation-history";
 import { checkValidColumnName, createSql } from "../utils/database/sql";
+import { getValidationHistory } from "../utils/database/database";
+import { ValidationCount, ValidationHistory, ValidationHistoryResponse } from "../types/database";
 
-export const getValidationHistory = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
+export const validationHistory = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
   logger.info('Getting validation history...');
 
@@ -45,7 +47,19 @@ export const getValidationHistory = async (event: APIGatewayProxyEvent, context:
   logger.info(`SQL Query: ${sqlQuery}`);
   logger.info(`Count Query: ${countQuery}`);
 
-  // TODO: Add obtaining data from the database and make count, then return result
+  const history = await getValidationHistory(sqlQuery, validationHistory) as ValidationHistory;
+  const recordCount = await getValidationHistory(countQuery, validationHistory) as ValidationCount;
+
+
+
+  logger.info(`Return results... ${validationHistory.accountId}`);
+  logger.info(JSON.stringify(history.records));
+
+  const response: ValidationHistoryResponse = {
+    data: history.records,
+    records: recordCount.records.length > 0 ? recordCount.records[0].count : 0,
+  };
+
 
 
   return {

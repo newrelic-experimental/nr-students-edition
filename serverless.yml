@@ -120,7 +120,7 @@ functions:
               querystrings:
                 accountId: true
   validation-history:
-    handler: src/functions/validation-history.getValidationHistory
+    handler: src/functions/validation-history.validationHistory
     description: Gets validation history for given account id
     memorySize: 512
     iamRoleStatements:

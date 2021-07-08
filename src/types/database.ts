@@ -23,6 +23,14 @@ export type StatusAndAccountType = {
 };
 
 export type ValidationHistoryResponse = {
-  attempts: Array<ValidationHistory>;
+  data: Array<StudentEntity>;
   records: number;
+};
+
+export type ValidationCount = {
+  records: Array<Count>;
+};
+
+type Count = {
+  count: number;
 };

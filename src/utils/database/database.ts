@@ -1,4 +1,4 @@
-import { DatabaseContext, ValidationHistory } from '../../types/database';
+import { DatabaseContext, ValidationCount, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
 import { StudentDTO, StudentEntity, ValidationStatus  } from '../../types/person';
@@ -133,7 +133,7 @@ export const saveAccessToken = async (tokenEntity: TokenEntity): Promise<any | u
   return result;
 };
 
-export const getValidationHistory = async (query: string, params: ValidationHistoryRequest): Promise<StudentEntity> => {
+export const getValidationHistory = async (query: string, params: ValidationHistoryRequest): Promise<ValidationCount | ValidationHistory | undefined> => {
   const result = await dbClient.query({
     sql: query,
     parameters: [
@@ -164,5 +164,5 @@ export const getValidationHistory = async (query: string, params: ValidationHist
     ]
   });
 
-  return result as StudentEntity;
+  return result;
 };
