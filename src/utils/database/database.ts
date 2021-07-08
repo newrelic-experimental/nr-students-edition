@@ -1,9 +1,10 @@
 import { DatabaseContext, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO, ValidationStatus  } from '../../types/person';
+import { StudentDTO, StudentEntity, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
+import { ValidationHistoryRequest } from '../../types/validation-history';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -130,4 +131,38 @@ export const saveAccessToken = async (tokenEntity: TokenEntity): Promise<any | u
   });
 
   return result;
+};
+
+export const getValidationHistory = async (query: string, params: ValidationHistoryRequest): Promise<StudentEntity> => {
+  const result = await dbClient.query({
+    sql: query,
+    parameters: [
+      {
+        account_id: params.accountId
+      },
+      {
+        search_phrase: params.searchPhrase
+      },
+      {
+        column: params.orderBy
+      },
+      {
+        direction: params.orderAsc
+      },
+      {
+        limit: params.limit
+      },
+      {
+        offset: params.offset
+      },
+      {
+        start_date: params.startDate
+      },
+      {
+        end_date: params.endDate
+      }
+    ]
+  });
+
+  return result as StudentEntity;
 };

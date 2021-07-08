@@ -34,7 +34,7 @@
     "@types/aws-lambda": "^8.10.78",
     "@types/data-api-client": "^1.2.2",
     "@types/jest": "^26.0.24",
-    "@types/node": "^16.0.0",
+    "@types/node": "^16.0.1",
     "@types/node-fetch": "^2.5.11",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
@@ -51,13 +51,13 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "aws-sdk": "2.940.0",
+    "aws-sdk": "2.941.0",
     "axios": "0.21.1",
     "data-api-client": "^1.2.0",
     "dotenv": "^10.0.0",
     "envalid": "^7.1.0",
     "http-status-codes": "^2.1.4",
-    "myzod": "^1.7.4",
+    "myzod": "^1.8.2",
     "node-fetch": "^2.6.1",
     "serverless": "^2.51.0"
   },
