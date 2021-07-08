@@ -60,13 +60,11 @@ export const validationHistory = async (event: APIGatewayProxyEvent, context: Co
     records: recordCount.records.length > 0 ? recordCount.records[0].count : 0,
   };
 
-
-
   return {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
     statusCode: StatusCode.OK,
-    body: 'MOCK'
+    body: JSON.stringify(response)
   };
 };
