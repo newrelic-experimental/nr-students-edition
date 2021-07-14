@@ -17,10 +17,13 @@ export const validationHistory = async (event: APIGatewayProxyEvent, context: Co
   logger.info(`Obtained parameters: ${JSON.stringify(params)}`);
 
   logger.info('Checking if required account id is provided...');
-  if (!params.accountId) {
+  if (params.accountId && params.searchPhrase) {
     return badRequestError;
   }
 
+  if (!params.startDate && !params.endDate) {
+    return badRequestError;
+  }
 
   const validationHistory: ValidationHistoryRequest = {
     accountId: params.accountId,
