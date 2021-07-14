@@ -21,3 +21,16 @@ export type StatusAndAccountType = {
   validationStatus: string,
   accountType: string
 };
+
+export type ValidationHistoryResponse = {
+  data: Array<StudentEntity>;
+  records: number;
+};
+
+export type ValidationCount = {
+  records: Array<Count>;
+};
+
+type Count = {
+  count: number;
+};

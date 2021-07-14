@@ -71,6 +71,8 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
       accountType: accountType
     };
 
+    logger.info(JSON.stringify(preStudentData));
+
     try {
       await saveValidationAttempt(preStudentData);
     } catch (error) {
@@ -78,8 +80,11 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
       const preStudentData: StudentDTO = {
         accountId: stateFromDB.records[0].account_id,
-        validationStatus: ValidationStatus.ineligibleGithubAccountAlreadyUsed
+        validationStatus: ValidationStatus.ineligibleGithubAccountAlreadyUsed,
+        accountType: accountType
       };
+
+      logger.error('Pre Student Data on error ' + JSON.stringify(preStudentData));
 
       await saveValidationAttempt(preStudentData);
 
@@ -92,8 +97,11 @@ export const getUserData = async (event: APIGatewayProxyEvent, context: Context)
 
     const preStudentData: StudentDTO = {
       accountId: stateFromDB.records[0].account_id,
-      validationStatus: ValidationStatus.ineligible
+      validationStatus: ValidationStatus.ineligible,
+      accountType: accountType
     };
+
+    logger.info('Before save on else');
 
     await saveValidationAttempt(preStudentData);
 

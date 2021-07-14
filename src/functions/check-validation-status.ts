@@ -39,6 +39,8 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
     accountType: studentDTO.accountType
   };
 
+  console.log('Result: ' + JSON.stringify(result));
+
   return {
     headers: {
       'Access-Control-Allow-Origin': '*',

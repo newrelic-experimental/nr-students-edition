@@ -23,7 +23,7 @@ export const studentDTOSchema = myzod.object({
   isThirteenYo: myzod.boolean().optional(),
   parentsEmail: myzod.string().optional(),
   validationStatus: myzod.string(),
-  accountType: myzod.string()
+  accountType: myzod.string().optional()
 
 }).collectErrors();
 
