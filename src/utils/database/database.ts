@@ -1,7 +1,7 @@
 import { DatabaseContext, ValidationCount, ValidationHistory } from '../../types/database';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO, StudentEntity, ValidationStatus  } from '../../types/person';
+import { StudentDTO, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 import { ValidationHistoryRequest } from '../../types/validation-history';
