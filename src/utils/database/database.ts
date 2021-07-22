@@ -89,6 +89,27 @@ export const saveValidationAttempt = async (student: StudentDTO): Promise<any | 
   return result;
 };
 
+export const saveManualApproval = async (
+  accountId: string,
+  description: string,
+  validationSource: string
+): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_history (validation_status, account_id, description, validation_source)
+      VALUES (:validation_status, :account_id, :description, :validation_source)`,
+    parameters: [
+      {
+        account_id: accountId,
+        description: description,
+        validation_status: true,
+        validation_source: validationSource,
+      },
+    ],
+  });
+
+  return result;
+};
+
 export const deleteValidationAttempt = async (accountId: string): Promise<any | undefined> => {
   const result = await dbClient.query({
     sql: `DELETE FROM validation_history WHERE account_id = :account_id AND validation_status = :validation_status`,
