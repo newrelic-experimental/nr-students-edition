@@ -1,8 +1,7 @@
 import { ValidationHistoryRequest } from "../../types/validation-history";
 
 export const checkValidColumnName = (columnName: string): boolean => {
-  const columnNames = ['account_id', 'name', 'surname', 'university', 'creation_date'];
-
+  const columnNames = ['account_id', 'name', 'surname', 'university', 'creation_date', 'level_of_study', 'graduation_date', 'validation_status', 'user_email', 'nr_email'];
   return columnNames.includes(columnName);
 };
 
