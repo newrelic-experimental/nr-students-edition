@@ -103,7 +103,7 @@ export const saveManualApproval = async (
       {
         account_id: accountId,
         description: description,
-        validation_status: true,
+        validation_status: ValidationStatus.eligible.toString(),
         validation_source: validationSource,
       },
     ],
