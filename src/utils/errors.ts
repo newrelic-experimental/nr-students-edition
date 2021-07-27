@@ -12,6 +12,17 @@ export const badRequestError: LambdaResponse = {
   }),
 };
 
+export const accountAlreadyExist: LambdaResponse = {
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
+  statusCode: StatusCodes.UNAUTHORIZED,
+  body: JSON.stringify({
+    internalStatusCode: 40101,
+    message: 'Probably the account is already manual approved',
+  }),
+};
+
 export const recordNotFound: LambdaResponse = {
   headers: {
     'Access-Control-Allow-Origin': '*'

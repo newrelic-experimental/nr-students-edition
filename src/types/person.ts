@@ -24,7 +24,6 @@ export const studentDTOSchema = myzod.object({
   parentsEmail: myzod.string().optional(),
   validationStatus: myzod.string(),
   accountType: myzod.string().optional()
-
 }).collectErrors();
 
 export const studentEntitySchema = myzod.object({
