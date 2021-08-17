@@ -2,8 +2,8 @@ import os
 from typing import List
 
 # Those variables change to your paths
-PATH = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains"
-PREFIX = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains/"
+PATH = ""
+PREFIX = ""
 PATH_TO_SAVE_DOMAINS = "../resources/domains"
 list_of_domains: List = []
 
