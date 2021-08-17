@@ -1,10 +1,10 @@
 import os
 from typing import List
 
-
+# Those variables change to your paths
 PATH = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains"
 PREFIX = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains/"
-PATH_TO_SAVE_DOMAINS = ""
+PATH_TO_SAVE_DOMAINS = "../resources/domains"
 list_of_domains: List = []
 
 
@@ -23,6 +23,6 @@ for domain in list_of_domains:
     domain = domain.replace(" ", ".")
     print(domain)
 
-    with open('./domains', 'a') as file:
+    with open(PATH_TO_SAVE_DOMAINS, 'a') as file:
         if '.' in domain:
             file.write(domain + '\n')
