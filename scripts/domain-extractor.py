@@ -4,24 +4,19 @@ from typing import List
 # Those variables change to your paths
 PATH = ""
 PREFIX = ""
-PATH_TO_SAVE_DOMAINS = "../resources/domains"
+PATH_TO_SAVE_DOMAINS = ""
 list_of_domains: List = []
 
 
 for root, subdirs, files in os.walk(PATH):
-    current_path = root.removeprefix(PREFIX)
-    current_path = current_path.split("/")
+    current_path = root.removeprefix(PREFIX).split("/")
     reversed_current_path = current_path[::-1]
     result = " ".join([str(x) for x in reversed_current_path])
 
     list_of_domains.append(result)
 
-    print(f"Current Path: {reversed_current_path}")
-
-
 for domain in list_of_domains:
     domain = domain.replace(" ", ".")
-    print(domain)
 
     with open(PATH_TO_SAVE_DOMAINS, 'a') as file:
         if '.' in domain:
