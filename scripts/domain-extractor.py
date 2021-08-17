@@ -1,9 +1,6 @@
-from dataclasses import replace
-from genericpath import isdir
 import os
-import sys
 from typing import List
-from xml import dom
+
 
 PATH = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains"
 PREFIX = "/Users/dmar/New-Relic/jetbrains-swot/lib/domains/"
