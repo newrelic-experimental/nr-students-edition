@@ -59,7 +59,7 @@ export const updateStudentData = async (student: StudentDTO): Promise<any | unde
         name: student.firstname,
         surname: student.lastname,
         university: student.university,
-        graduation_date: student.graduationDate,
+        graduation_date: student.graduationDate || '',
         country: student.country,
         is_thirteen_yo: student.isThirteenYo,
         level_of_study: student.levelOfStudy,

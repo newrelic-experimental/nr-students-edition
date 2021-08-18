@@ -165,6 +165,14 @@ GET
 503 - Something went wrong with Github API
 ```
 
+## Script to extract domains from JetBrains repository
+For New Relic validation we are using the Jet Brains repo. To create list of domains in your project do following steps:
+- Clone repo with domains https://github.com/pup500/jetbrains-swot
+- Set up the variables of the script. The scripts in located in './scripts'
+- Run command `python scripts/domain-extractor.py`
+
+After performing those steps you should have list of domains. This repo contains domain list generated at 17.08.2021. Domains are updating rare in JetBrains repo.
+
 ## Testing
 To run the tests use ```npm test``` command on the project.
 
