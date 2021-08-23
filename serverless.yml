@@ -155,7 +155,3 @@ functions:
           path: /history
           method: get
           cors: true
-          request:
-            parameters:
-              querystrings:
-                accountId: true

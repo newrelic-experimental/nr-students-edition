@@ -47,28 +47,51 @@ export const getValidationStatusByAccountId = async (accountId: string): Promise
 };
 
 export const updateStudentData = async (student: StudentDTO): Promise<any | undefined> => {
-  const result = await dbClient.query({
-    sql: `UPDATE validation_history
-      SET nr_email = :nr_email, user_email = :user_email, name = :name, surname = :surname, university = :university, graduation_date = :graduation_date, country = :country, is_thirteen_yo = :is_thirteen_yo, level_of_study = :level_of_study, parents_email = :parents_email, validation_status = :validation_status, validation_source = :validation_source
-      WHERE id = (SELECT id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
-    parameters: [
-      {
-        account_id: student.accountId,
-        nr_email: student.nrEmail,
-        user_email: student.userEmail,
-        name: student.firstname,
-        surname: student.lastname,
-        university: student.university,
-        graduation_date: student.graduationDate || '',
-        country: student.country,
-        is_thirteen_yo: student.isThirteenYo,
-        level_of_study: student.levelOfStudy,
-        parents_email: student.parentsEmail || '',
-        validation_status: student.validationStatus,
-        validation_source: 'github'
-      },
-    ],
-  });
+  let result = null;
+
+  if (!student.graduationDate) {
+    result = await dbClient.query({
+      sql: `UPDATE validation_history
+        SET nr_email = :nr_email, user_email = :user_email, name = :name, surname = :surname, university = :university, country = :country, validation_status = :validation_status, validation_source = :validation_source
+        WHERE id = (SELECT id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
+      parameters: [
+        {
+          account_id: student.accountId,
+          nr_email: student.nrEmail,
+          user_email: student.userEmail,
+          name: student.firstname,
+          surname: student.lastname,
+          university: student.university,
+          country: student.country,
+          validation_status: student.validationStatus,
+          validation_source: 'github'
+        },
+      ],
+    });
+  } else {
+    result = await dbClient.query({
+      sql: `UPDATE validation_history
+        SET nr_email = :nr_email, user_email = :user_email, name = :name, surname = :surname, university = :university, graduation_date = :graduation_date, country = :country, is_thirteen_yo = :is_thirteen_yo, level_of_study = :level_of_study, parents_email = :parents_email, validation_status = :validation_status, validation_source = :validation_source
+        WHERE id = (SELECT id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
+      parameters: [
+        {
+          account_id: student.accountId,
+          nr_email: student.nrEmail,
+          user_email: student.userEmail,
+          name: student.firstname,
+          surname: student.lastname,
+          university: student.university,
+          graduation_date: student.graduationDate,
+          country: student.country,
+          is_thirteen_yo: student.isThirteenYo || false,
+          level_of_study: student.levelOfStudy,
+          parents_email: student.parentsEmail,
+          validation_status: student.validationStatus,
+          validation_source: 'github'
+        },
+      ],
+    });
+  }
 
   return result;
 };
@@ -76,7 +99,7 @@ export const updateStudentData = async (student: StudentDTO): Promise<any | unde
 export const saveValidationAttempt = async (student: StudentDTO): Promise<any | undefined> => {
   const result = await dbClient.query({
     sql: `INSERT INTO validation_history (account_id, validation_status, github_id, account_type, validation_source)
-      VALUES (:account_id, :validation_status, :github_id, :account_type)`,
+      VALUES (:account_id, :validation_status, :github_id, :account_type, :validation_source)`,
     parameters: [
       {
         account_id: student.accountId,
