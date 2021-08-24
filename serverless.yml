@@ -155,3 +155,17 @@ functions:
           path: /history
           method: get
           cors: true
+  check-domain:
+    handler: src/functions/check-domain.check
+    description: Checks if given domain is in the list
+    memorySize: 512
+    events:
+      - s3: se-resources-bucket
+      - http:
+          path: /domain/check
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                accountId: true
