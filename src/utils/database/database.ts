@@ -85,7 +85,7 @@ export const updateStudentData = async (student: StudentDTO): Promise<any | unde
           country: student.country,
           is_thirteen_yo: student.isThirteenYo || false,
           level_of_study: student.levelOfStudy,
-          parents_email: student.parentsEmail,
+          parents_email: student.parentsEmail || '',
           validation_status: student.validationStatus,
           validation_source: 'github'
         },
