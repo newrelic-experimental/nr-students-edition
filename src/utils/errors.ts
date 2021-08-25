@@ -1,6 +1,15 @@
 import { LambdaResponse } from "../types/response";
 import { StatusCodes } from 'http-status-codes';
 
+
+export const ok: LambdaResponse = {
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  statusCode: StatusCodes.OK,
+  body: JSON.stringify('')
+};
+
 export const badRequestError: LambdaResponse = {
   headers: {
     'Access-Control-Allow-Origin': '*',
@@ -20,6 +29,17 @@ export const accountAlreadyExist: LambdaResponse = {
   body: JSON.stringify({
     internalStatusCode: 40101,
     message: 'Probably the account is already manual approved',
+  }),
+};
+
+export const forbidden: LambdaResponse = {
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  statusCode: StatusCodes.NOT_FOUND,
+  body: JSON.stringify({
+    internalStatusCode: 40301,
+    message: 'This email is not valid to use. Please contact New Relic support'
   }),
 };
 

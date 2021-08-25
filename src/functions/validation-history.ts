@@ -11,7 +11,7 @@ import { ValidationCount, ValidationHistory, ValidationHistoryResponse } from ".
 
 export const validationHistory = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
-  logger.info('Getting validation history...');
+  logger.info('Getting validation history for account...');
 
   const params = event.queryStringParameters || {};
   logger.info(`Obtained parameters: ${JSON.stringify(params)}`);
@@ -52,8 +52,6 @@ export const validationHistory = async (event: APIGatewayProxyEvent, context: Co
 
   const history = await getValidationHistory(sqlQuery, validationHistory) as ValidationHistory;
   const recordCount = await getValidationHistory(countQuery, validationHistory) as ValidationCount;
-
-
 
   logger.info(`Return results... ${validationHistory.accountId}`);
   logger.info(JSON.stringify(history.records));
