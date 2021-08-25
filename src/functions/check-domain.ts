@@ -27,18 +27,20 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
   const splittedDomains = domains.split('\n');
 
   for (const domain of splittedDomains) {
-    console.log(`Domain name: ${domain}`);
+    logger.info(`Domain name: ${domain}`);
 
     if (email.endsWith(domain)) {
-      console.log(`Email: ${email}, Domain: ${domain}`);
+      logger.info(`Email: ${email}, Domain: ${domain}`);
 
       return ok;
     }
 
     if (email.endsWith('')) {
+      logger.info('There is no email with this domain...');
       return forbidden;
     }
   }
 
+  logger.info('There is no email with this domain...');
   return forbidden;
 };
