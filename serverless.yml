@@ -156,15 +156,14 @@ functions:
     description: Checks if given domain is in the list
     memorySize: 512
     iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - s3:GetObject
-          - s3:ListBuckets
-        Resource: "arn:aws:s3:::${env:BUCKET_NAME}"
+    -  Effect: "Allow"
+       Action:
+         - "s3:GetObject"
+         - "s3:ListBuckets"
+       Resource: "arn:aws:s3:::*"
     events:
       - s3: se-resources-staging-bucket
       - http:
           path: /domain/check
           method: get
           cors: true
-          
