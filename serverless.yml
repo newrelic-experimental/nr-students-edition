@@ -160,7 +160,7 @@ functions:
     description: Checks if given domain is in the list
     memorySize: 512
     events:
-      - s3: se-resources-bucket
+      - s3: se-resources-staging-bucket
       - http:
           path: /domain/check
           method: get

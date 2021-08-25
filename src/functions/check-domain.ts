@@ -11,7 +11,7 @@ const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 export const check = async (event: APIGatewayProxyEvent, context: Context): Promise<LambdaResponse> => {
   const logger = new Logger(context);
-  const bucketParams = { Bucket: 'se-resources-bucket', Key: 'domains' };
+  const bucketParams = { Bucket: 'se-resources-staging-bucket', Key: 'domains' };
   const data = await s3.getObject(bucketParams).promise();
   const domains = data.Body.toString();
   const params = event.queryStringParameters || {};
