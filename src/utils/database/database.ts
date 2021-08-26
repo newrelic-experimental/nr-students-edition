@@ -138,7 +138,7 @@ export const saveManualApproval = async (
 export const updateBasedOnManualApprovalData = async (accountId: string, description: string, validationSource: string): Promise<any | undefined> => {
   const result = await dbClient.query({
     sql: `UPDATE validation_history SET validation_status = :validation_status, description = :description, validation_source = :validation_source
-            WHERE accound_id = (SELECT account_id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
+            WHERE account_id = (SELECT account_id FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC LIMIT 1)`,
     parameters: [
       {
         account_id: accountId,
