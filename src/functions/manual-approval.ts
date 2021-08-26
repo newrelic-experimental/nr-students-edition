@@ -2,8 +2,8 @@ import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { ValidationHistory } from '../types/database';
 import { ManualApproval } from '../types/manual-approval';
 import { LambdaResponse } from '../types/response';
-import { getValidationStatusByAccountId, saveManualApproval } from '../utils/database/database';
-import { accountAlreadyExist, badRequestError } from '../utils/errors';
+import { getValidationStatusByAccountId, saveManualApproval, updateBasedOnManualApprovalData } from '../utils/database/database';
+import { badRequestError } from '../utils/errors';
 import { Logger } from '../utils/logger';
 
 
@@ -20,8 +20,19 @@ export const manualApprove = async (event: APIGatewayProxyEvent, context: Contex
     const result: ValidationHistory = await getValidationStatusByAccountId(manual.accountId);
 
     if (result.records.length > 0) {
-      logger.error('Account already exists in the database');
-      return accountAlreadyExist;
+      logger.info('Updating the existing account...');
+
+      const manualApproved = await updateBasedOnManualApprovalData(manual.accountId, manual.description, manual.validationSource);
+      logger.info(`Saved user data for account id: ${manual.accountId}`);
+      logger.info(manualApproved);
+
+      return {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        statusCode: 200,
+        body: JSON.stringify(''),
+      };
     }
 
     logger.info(`Saving user data for manual validation for account: ${manual.accountId}`);

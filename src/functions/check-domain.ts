@@ -23,7 +23,8 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
     return badRequestError;
   }
 
-  logger.info('Validating email address...');
+  logger.info(`Incoming Email: ${email}`);
+  logger.info('Validating email address if it is correct...');
   const splittedDomains = domains.split('\n');
 
   for (const domain of splittedDomains) {
@@ -31,16 +32,12 @@ export const check = async (event: APIGatewayProxyEvent, context: Context): Prom
 
     if (email.endsWith(domain)) {
       logger.info(`Email: ${email}, Domain: ${domain}`);
+      logger.info('Found the domain...');
 
       return ok;
     }
-
-    if (email.endsWith('')) {
-      logger.info('There is no email with this domain...');
-      return forbidden;
-    }
   }
 
-  logger.info('There is no email with this domain...');
+  logger.error('There is no email with this domain...');
   return forbidden;
 };

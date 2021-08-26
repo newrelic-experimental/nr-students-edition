@@ -36,7 +36,7 @@ export const forbidden: LambdaResponse = {
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
-  statusCode: StatusCodes.NOT_FOUND,
+  statusCode: StatusCodes.FORBIDDEN,
   body: JSON.stringify({
     internalStatusCode: 40301,
     message: 'This email is not valid to use. Please contact New Relic support'
