@@ -42,7 +42,7 @@ export const manualApprove = async (event: APIGatewayProxyEvent, context: Contex
     logger.info(manualApproved);
 
   } catch (error) {
-    logger.error('Something happend while saving the data...');
+    logger.error('Something happend while saving data...');
     logger.error(error.message);
     return badRequestError;
   }
