@@ -1,10 +1,10 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
-import { LambdaResponse } from "../types/response";
-import { Logger } from "../utils/logger";
+import { APIGatewayProxyEvent } from 'aws-lambda';
+import { LambdaResponse } from '../types/response';
+import { Logger } from '../utils/logger';
 import { Context } from 'aws-lambda/handler';
-import { StudentDTO, studentDTOSchema } from "../types/person";
-import { ValidationError } from "myzod";
-import { badRequestError, internalLambdaError } from "../utils/errors";
+import { StudentDTO, studentDTOSchema } from '../types/person';
+import { ValidationError } from 'myzod';
+import { badRequestError, internalLambdaError } from '../utils/errors';
 import { updateStudentData } from '../utils/database/database';
 import StatusCode from 'http-status-codes';
 
