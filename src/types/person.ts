@@ -26,6 +26,19 @@ export const studentDTOSchema = myzod.object({
   accountType: myzod.string().optional()
 }).collectErrors();
 
+export const teacherDTOSchema = myzod.object({
+  accountId: myzod.string(),
+  githubId: myzod.string().optional(),
+  nrEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
+  userEmail: myzod.string().pattern(EMAIL_PATTERN).optional(),
+  firstname: myzod.string().optional(),
+  lastname: myzod.string().optional(),
+  university: myzod.string().optional(),
+  country: myzod.string().optional(),
+  validationStatus: myzod.string(),
+  accountType: myzod.string().optional()
+}).collectErrors();
+
 export const studentEntitySchema = myzod.object({
   account_id: myzod.string(),
   github_id: myzod.string().optional(),
@@ -45,3 +58,4 @@ export const studentEntitySchema = myzod.object({
 
 export type StudentDTO = Infer<typeof studentDTOSchema>;
 export type StudentEntity = Infer<typeof studentEntitySchema>;
+export type TeacherDTO = Infer<typeof teacherDTOSchema>;
