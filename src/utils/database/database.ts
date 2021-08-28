@@ -1,7 +1,8 @@
 import { DatabaseContext, ValidationCount, ValidationHistory } from '../../types/database';
+import { AccountType } from '../../types/account-type';
 import { config } from '../../config';
 import DataApiClient from 'data-api-client';
-import { StudentDTO, ValidationStatus  } from '../../types/person';
+import { StudentDTO, TeacherDTO, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 import { ValidationHistoryRequest } from '../../types/validation-history';
@@ -42,6 +43,54 @@ export const getValidationStatusByAccountId = async (accountId: string): Promise
     `SELECT validation_status, account_type FROM validation_history WHERE account_id = :account_id ORDER BY creation_date DESC`,
     { account_id: accountId }
   );
+
+  return result;
+};
+
+export const createStudentData = async (student: StudentDTO): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_history (account_id, nr_email, user_email, firstname, lastname, university, level_of_study, graduation_date, country, is_thirteen_yo, parents_email, validation_status, account_type)
+    VALUES (:account_id, :nr_email, :user_email, :firstname, :lastname, :university, :level_of_study, :graduation_date, :country, :is_thirteen_yo, :parents_email, :validation_status, :account_type)`,
+    parameters: [
+      {
+        account_id: student.accountId,
+        nr_email: student.nrEmail,
+        user_email: student.userEmail,
+        firstname: student.firstname,
+        lastname: student.lastname,
+        university: student.university,
+        level_of_student: student.levelOfStudy,
+        graduation_date: student.graduationDate,
+        country: student.country,
+        is_thirteen_yo: student.isThirteenYo,
+        parents_email: student.parentsEmail,
+        validation_status: ValidationStatus.ongoingValidation.toString(),
+        account_type: AccountType.student.toString()
+      },
+    ],
+  });
+
+  return result;
+};
+
+export const createTeacherData = async (teacher: TeacherDTO): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO validation_history (account_id, nr_email, user_email, firstname, lastname, university, country, validation_status, account_type)
+    VALUES (:account_id, :nr_email, :user_email, :firstname, :lastname, :university, :country, :validation_status, :account_type)`,
+    parameters: [
+      {
+        account_id: teacher.accountId,
+        nr_email: teacher.nrEmail,
+        user_email: teacher.userEmail,
+        firstname: teacher.firstname,
+        lastname: teacher.lastname,
+        university: teacher.university,
+        country: teacher.country,
+        validation_status: ValidationStatus.ongoingValidation.toString(),
+        account_type: AccountType.teacher.toString()
+      }
+    ]
+  });
 
   return result;
 };
