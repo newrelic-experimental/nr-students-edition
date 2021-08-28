@@ -8,7 +8,7 @@ import { badRequestError, internalLambdaError } from "../utils/errors";
 import { generateState } from "../utils/generators/state-generator";
 import { saveState } from '../utils/database/database';
 import { config } from '../config';
-import { AccountType } from "../types/account-type";
+import { Account } from "../types/account-type";
 
 
 const STATE_SIZE = 32;
@@ -45,7 +45,7 @@ export const authGithub = async (event: APIGatewayProxyEvent, context: Context):
       account_id: accountId,
       state: state,
       redirect_to: redirectTo,
-      account_type: accountType as AccountType
+      account_type: accountType as Account
     };
 
     await saveState(stateEntity);
