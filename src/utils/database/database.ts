@@ -7,6 +7,7 @@ import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 import { ValidationHistoryRequest } from '../../types/validation-history';
 import { OneTimeCode } from '../../types/codes';
+import { ValidationSource } from '../../types/validation-source';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -89,6 +90,26 @@ export const createTeacherData = async (teacher: TeacherDTO): Promise<any | unde
         country: teacher.country,
         validation_status: ValidationStatus.ongoingValidation.toString(),
         account_type: AccountType.teacher.toString()
+      }
+    ]
+  });
+
+  return result;
+};
+
+/**
+ * Note: This method is for update student/teacher which uses New Relic Validation.
+ */
+export const updateUserData = async (account_id: string): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `UPDATE validation_history
+          SET validation_status = :validation_status
+          WHERE id = (SELECT id FROM validation_history WHERE account_id = :account_id AND validation_source = :validation_source ORDER BY creation_date DESC LIMIT 1)`,
+    parameters: [
+      {
+        account_id: account_id,
+        validation_status: ValidationStatus.eligible.toString(),
+        validation_source: ValidationSource.newrelic.toString()
       }
     ]
   });
