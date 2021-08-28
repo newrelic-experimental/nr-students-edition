@@ -1,9 +1,10 @@
 import { SES } from 'aws-sdk';
 import { config } from '../../config';
 import { createSendEmailRequest, EmailRequestParams } from '../../types/email';
+import { Logger } from '../../utils/logger';
 
 
-export const sendEmailWithCode = async (code: string, destinationAddress: string): Promise<void> => {
+export const sendEmailWithCode = async (code: string, destinationAddress: string, logger: Logger): Promise<void> => {
   const awsSesSourceAddress = config.SOURCE_EMAIL_ADDRESS;
   const awsSesSubject = 'New Relic Validation Code';
 
@@ -24,8 +25,7 @@ export const sendEmailWithCode = async (code: string, destinationAddress: string
     const email = createSendEmailRequest(emailParams);
 
     await sesClient.sendEmail(email).promise();
-  } catch (error) {
-    console.error(error.message);
-    console.error('For some reason email could not be sent');
+  } catch (error: any) {
+    logger.error(`For some reason email could not be sent. Detailed message: ${error.message}`);
   }
 };
