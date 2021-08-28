@@ -13,7 +13,7 @@ export const sendPostRequest = async (url: string, body: GithubCredentials) => {
     });
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error.message);
   }
 };
@@ -30,7 +30,7 @@ export const sendGetRequest = async (url: string, accessToken: string) => {
     });
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error.message);
   }
 };
@@ -46,7 +46,7 @@ export const sendGetRequestWithToken = async (url: string, accessToken: string) 
     });
 
     return data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error.message);
   }
 };
