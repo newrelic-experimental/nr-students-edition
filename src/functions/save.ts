@@ -14,8 +14,6 @@ export const save = async (event: APIGatewayProxyEvent, context: Context): Promi
   logger.info('Pasre incoming bod...');
   const body = JSON.parse(event.body);
 
-  // TODO: Write DTO to Entity conversion and apply for the database
-
   let student: StudentDTO = null;
   logger.info('Save user data lambda...');
 
