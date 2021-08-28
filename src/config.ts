@@ -1,4 +1,4 @@
-import { cleanEnv, str } from 'envalid';
+import { cleanEnv, str, email } from 'envalid';
 import { config as loadEnv } from 'dotenv';
 
 
@@ -20,7 +20,8 @@ export const config = cleanEnv(
     GITHUB_USER_DATA_URL: str(),
     GITHUB_API_USER_URL: str(),
     GITHUB_CLIENT_ID: str(),
-    GITHUB_SECRET: str()
+    GITHUB_SECRET: str(),
+    SOURCE_EMAIL_ADDRESS: email()
   }
 );
 
@@ -36,4 +37,5 @@ export type AppConfig = Readonly<{
   GITHUB_API_USER_URL: string;
   GITHUB_CLIENT_ID: string;
   GITHUB_SECRET: string;
+  SOURCE_EMAIL_ADDRESS: string;
 }>;
