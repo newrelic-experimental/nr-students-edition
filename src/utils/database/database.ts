@@ -6,6 +6,7 @@ import { StudentDTO, TeacherDTO, ValidationStatus  } from '../../types/person';
 import { StateEntity } from '../../types/state';
 import { TokenEntity } from '../../types/github';
 import { ValidationHistoryRequest } from '../../types/validation-history';
+import { OneTimeCode } from '../../types/codes';
 
 const databaseContext: DatabaseContext = {
   resourceArn: config.DATABASE_RESOURCE_ARN,
@@ -272,6 +273,20 @@ export const getValidationHistory = async (query: string, params: ValidationHist
       },
       {
         end_date: params.endDate
+      }
+    ]
+  });
+
+  return result;
+};
+
+export const saveOneTimeCode = async (otc: OneTimeCode): Promise<any | undefined> => {
+  const result = await dbClient.query({
+    sql: `INSERT INTO codes (account_id, code) VALUES (:account_id, :code)`,
+    parameters: [
+      {
+        account_id: otc.accountId,
+        code: otc.code
       }
     ]
   });
